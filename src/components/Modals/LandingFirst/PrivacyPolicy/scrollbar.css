@@ -1,0 +1,23 @@
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: blue; /* Change to your desired color */
+    border-radius: 10px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Optional: Customize scrollbar background */
+  }
+  
+  .custom-scrollbar {
+    scrollbar-color: blue #f1f1f1; /* Firefox support */
+    scrollbar-width: thin; /* Makes the scrollbar thinner */
+  }
+  
+  .custom-scrollbar {
+    direction: rtl; /* Keeps the text flowing right-to-left */
+  }
+  

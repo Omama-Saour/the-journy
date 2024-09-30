@@ -1,0 +1,40 @@
+.react-calendar {
+    @apply bg-white border-none rounded-lg w-[500px];
+  }
+  
+  .react-calendar__navigation {
+    @apply flex justify-between items-center text-lg font-bold;
+  }
+  
+  /* Hide the year navigation arrows */
+  .react-calendar__navigation button:nth-child(1),
+  .react-calendar__navigation button:nth-child(5) {
+    display: none; /* Hides the year navigation buttons */
+  }
+
+  .react-calendar__navigation button:nth-child(2),
+  .react-calendar__navigation button:nth-child(4) {
+     @apply text-sm font-medium; 
+     font-size: 4rem; 
+     padding: 10px; 
+  }
+  
+  .react-calendar__month-view__days__day {
+    @apply text-center py-5 px-3 rounded-md;
+  }
+  
+  .react-calendar__month-view__weekdays {
+    @apply mb-4 mt-8;
+  }
+  
+  .react-calendar__tile--now {
+    @apply bg-gray-200 text-black rounded-full;
+  }
+  
+  .react-calendar__tile--active {
+    @apply bg-black text-white rounded-full;
+  }
+  
+  .react-calendar__month-view__days__day--neighboringMonth {
+    @apply text-gray-400;
+  }
