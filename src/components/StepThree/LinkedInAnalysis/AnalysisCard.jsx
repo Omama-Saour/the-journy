@@ -1,6 +1,6 @@
 import React from "react";
 import check from "../../../assets/StepThree/check-true.png";
-// import checkF from "../../../assets/StepThree/check-false.png";
+import checkF from "../../../assets/StepThree/check-false.png";
 
 const AnalysisCard = ({ title, items }) => {
   return (
@@ -19,12 +19,36 @@ const AnalysisCard = ({ title, items }) => {
               }}
             />
           </div>
-          <img
-            loading="lazy"
-            src={check}
-            alt=""
-            className="object-contain shrink-0 w-6 aspect-square"
-          />
+
+          {/* 
+          if label is :  "النص المحسن"
+          or 
+          lebal is : "الدرجة" and its content more than 5
+          */}
+        
+        {(item.label === "النص المحسن" || (item.label === "الدرجة" && parseInt(item.content, 10) > 5)) && (
+            <img
+              loading="lazy"
+              src={check}
+              alt=""
+              className="object-contain shrink-0 w-6 aspect-square"
+            />
+          )}
+
+          {/* 
+          if label is : "النص الأصلي"
+          or 
+          label is : "الدرجة" and its content less than 5
+          */}
+          {(item.label === "النص الأصلي" || (item.label === "الدرجة" && parseInt(item.content, 10) <= 5)) && (
+            <img
+              loading="lazy"
+              src={checkF}
+              alt=""
+              className="object-contain shrink-0 w-6 aspect-square"
+            />
+          )}
+
           <div className="w-[150px]">{item.label}</div>
         </div>
       ))}

@@ -4,30 +4,56 @@ import Button from "../EducationForm/Button";
 import LanguageEditCard from "./LanguageEditCard";
 import icon from "../../../../../src/assets/personltyTest/Vector.png";
 import plus from "../../../../../src/assets/StepTwo/plus.png";
-import { Post_Languages } from "../../../../modules/steps/steptwo/service"; // API method for adding languages
+import { Post_Languages } from "../../../../modules/steps/steptwo/service"; 
+import { Delete_Languages } from "../../../../modules/steps/steptwo/service"; 
 
-const LanguageEdit = ({ onSave }) => {
-  const [language, setLanguage] = useState(""); // Track the language input
-  const [languagesList, setLanguagesList] = useState([]); // Track list of added languages
-  const [error, setError] = useState(null); // Track any API errors
-  const [loading, setLoading] = useState(false); // Track loading state
+const LanguageEdit = ({ onSave , languages}) => {
+  const [language, setLanguage] = useState(""); 
+  const [languagesList, setLanguagesList] = useState([]); 
+  const [languagesListt, setLanguagesListt] = useState(languages); 
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false); 
+  const [deletingId, setDeletingId] = useState(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteError, setDeleteError] = useState(null);
 
   const handleLanguageChange = (e) => {
-    setLanguage(e.target.value); // Update the language input
+    setLanguage(e.target.value);
   };
 
   const handleAddLanguage = async (e) => {
     e.preventDefault();
     setLoading(true); // Set loading to true before API call
     try {
-      const response = await Post_Languages({ "language_name": language }); // Call the API
-      setLanguagesList([...languagesList, response.data]); // Add the new language to the list
-      setLanguage(""); // Clear the input after success
-      setError(null); // Clear any previous errors
+      const response = await Post_Languages({ "language_name": language }); 
+      const newLanguage = { ...response.data, id: response.data.id };
+      setLanguagesList([...languagesList, newLanguage]);
+      setLanguage(""); 
+      setError(null); 
     } catch (error) {
-      setError("فشل في إضافة اللغة. حاول مرة أخرى"); // Handle error
+      setError("فشل في إضافة اللغة. حاول مرة أخرى");
     } finally {
-      setLoading(false); // Reset loading state after the API call
+      setLoading(false); 
+    }
+  };
+
+  const handleDelete = async (id) => {
+    setDeleteLoading(true);
+    setDeleteError(null);
+    setDeletingId(id);
+    try {
+      let response = await Delete_Languages(id);
+
+setLanguagesList((prevList) => prevList.filter((edu) => edu.id !== id));
+
+setLanguagesListt((prevEducation) => prevEducation.filter((edu) => edu.id !== id));
+
+      console.log(response)
+    } catch (error) {
+      setDeleteError("فشل في حذف اللغة. حاول مرة أخرى");
+    } finally {
+      setDeleteLoading(false);
+      setDeletingId(null);
     }
   };
 
@@ -45,7 +71,7 @@ const LanguageEdit = ({ onSave }) => {
               src={icon}
               className="object-contain self-stretch my-auto w-8 aspect-square"
               alt=""
-              onClick={onSave} // Close the window when the icon is clicked
+              onClick={onSave} 
             />
           </div>
           <div className="overflow-y-auto max-h-[500px] w-full px-5">
@@ -55,14 +81,14 @@ const LanguageEdit = ({ onSave }) => {
                   label="اللغة"
                   placeholder="أدخل اسم اللغة"
                   value={language}
-                  onChange={handleLanguageChange} // Capture the language input
+                  onChange={handleLanguageChange} 
                 />
               </div>
 
               <button
                 className="flex gap-1 justify-center items-center self-center mt-4 text-base font-extrabold tracking-wider leading-snug text-neutral-800"
-                onClick={handleAddLanguage} // Trigger language addition on click
-                disabled={loading} // Disable button while loading
+                onClick={handleAddLanguage} 
+                disabled={loading}
               >
                 {loading ? (
                   <div className="flex justify-center items-center mt-10">
@@ -89,12 +115,29 @@ const LanguageEdit = ({ onSave }) => {
                 <LanguageEditCard
                   key={index}
                   initialValues={{
-                    skill: languageItem.language_name, // Display the added language
+                    skill: languageItem.language_name, 
+                    id: languageItem.id
                   }}
+                  onDelete={() => handleDelete(languageItem.id)} 
+                  deleteLoading={deletingId === languageItem.id} 
+                />
+
+              ))}
+
+                 {/* Display old languages */}
+                 {languagesListt.map((languages, index) => (
+                <LanguageEditCard
+                key={index}
+                initialValues={{
+                  skill: languages.language_name, 
+                  id: languages.id
+                }}
+                onDelete={() => handleDelete(languages.id)} 
+                deleteLoading={deletingId === languages.id} 
                 />
               ))}
 
-              <Button onClick={onSave} label="حفظ" />
+              <Button label="حفظ" />
             </form>
           </div>
         </main>

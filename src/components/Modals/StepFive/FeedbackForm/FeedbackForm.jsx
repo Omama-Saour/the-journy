@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import TextArea from "./TextArea";
 import RatingStep from "./RatingStep";
 
-const FeedbackForm = () => {
+const FeedbackForm = ({onSave}) => {
   const initialSteps = [
     {
       title: "الخطوة الاولي: اختبار شخصي موجه للتوظيف والمهن",
@@ -59,6 +59,7 @@ const FeedbackForm = () => {
               isButtonDisabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-black'
             } min-h-[56px] rounded-[32px] max-md:px-5`}
             disabled={isButtonDisabled}
+            onClick={onSave}
           >
             ارسال وانهاء
           </button>

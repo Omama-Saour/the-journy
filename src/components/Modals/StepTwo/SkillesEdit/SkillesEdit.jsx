@@ -5,31 +5,62 @@ import SkillesEditCard from "./SkillesEditCard";
 import icon from "../../../../../src/assets/personltyTest/Vector.png";
 import plus from "../../../../../src/assets/StepTwo/plus.png";
 import { Post_Skill } from "../../../../modules/steps/steptwo/service"; 
+import { Delete_Skill } from "../../../../modules/steps/steptwo/service";      
 
-const SkillesEdit = ({ onSave }) => {
-  const [skill, setSkill] = useState(""); // Track the skill input
-  const [skillsList, setSkillsList] = useState([]); // Track list of skills
-  const [error, setError] = useState(null); // Track any API errors
-  const [loading, setLoading] = useState(false); // Track loading state
+const SkillesEdit = ({ onSave, skills }) => {
+  const [skill, setSkill] = useState("");
+  const [skillsList, setSkillsList] = useState([]); 
+  const [skillsListt, setSkillsListt] = useState(skills); 
+  const [error, setError] = useState(null); 
+  const [loading, setLoading] = useState(false); 
+  const [deletingId, setDeletingId] = useState(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteError, setDeleteError] = useState(null);
 
   const handleSkillChange = (e) => {
-    setSkill(e.target.value); // Update the skill input
+    setSkill(e.target.value); 
   };
 
   const handleAddSkill = async (e) => {
     e.preventDefault();
-    setLoading(true); // Set loading to true before API call
+    setLoading(true); 
     try {
-      const response = await Post_Skill({ "skill_name": skill }); // Call the API
-      setSkillsList([...skillsList, response.data]); // Add the new skill to the list
-      setSkill(""); // Clear the input after success
-      setError(null); // Clear any previous errors
+      const response = await Post_Skill({ "skill_name": skill }); 
+      const newSkill = { "skill_name": skill , id: response.data.id };
+      setSkillsList([...skillsList,newSkill]);
+      console.log(response) 
+      setSkill(""); 
+      setError(null); 
     } catch (error) {
-      setError("فشل في إضافة المهارة. حاول مرة أخرى"); // Handle error
+      console.log(error) 
+      setError("فشل في إضافة المهارة. حاول مرة أخرى"); 
     } finally {
-      setLoading(false); // Reset loading state after the API call
+      setLoading(false);
     }
   };
+
+  const handleDelete = async (id) => {
+    setDeleteLoading(true);
+    setDeleteError(null);
+    setDeletingId(id);
+    try {
+      let response = await Delete_Skill(id);
+
+// Update educationList state to remove the item
+setSkillsList((prevList) => prevList.filter((edu) => edu.id !== id));
+
+// If education is also in the state and you want to update it
+setSkillsListt((prevEducation) => prevEducation.filter((edu) => edu.id !== id));
+
+      console.log(response)
+    } catch (error) {
+      setDeleteError("فشل في حذف المهارة. حاول مرة أخرى");
+    } finally {
+      setDeleteLoading(false);
+      setDeletingId(null);
+    }
+  };
+
 
   return (
     <>
@@ -45,7 +76,7 @@ const SkillesEdit = ({ onSave }) => {
               src={icon}
               className="object-contain self-stretch my-auto w-8 aspect-square"
               alt=""
-              onClick={onSave} // Close the window when the icon is clicked
+              onClick={onSave} 
             />
           </div>
           <div className="overflow-y-auto max-h-[500px] w-full px-5">
@@ -55,17 +86,16 @@ const SkillesEdit = ({ onSave }) => {
                   label="المهارة"
                   placeholder="أدخل اسم المهارة"
                   value={skill}
-                  onChange={handleSkillChange} // Capture the skill input
+                  onChange={handleSkillChange} 
                 />
               </div>
 
               <button
                 className="flex gap-1 justify-center items-center self-center mt-4 text-base font-extrabold tracking-wider leading-snug text-neutral-800"
-                onClick={handleAddSkill} // Trigger skill addition on click
-                disabled={loading} // Disable button while loading
+                onClick={handleAddSkill} 
+                disabled={loading} 
               >
                 {loading ? (
-                  // <span>جاري التحميل...</span> // Loading text
                   <div className="flex justify-center items-center mt-10">
                   <div className="loader"></div>{" "}
                 
@@ -91,12 +121,27 @@ const SkillesEdit = ({ onSave }) => {
                 <SkillesEditCard
                   key={index}
                   initialValues={{
-                    skill: skillItem.skill_name, // Display the added skill
+                    skill: skill.skill_name_ar ? skill.skill_name_ar : skill.skill_name,
+                    id: skillItem.id
                   }}
+                  onDelete={() => handleDelete(skillItem.id)} 
+                  deleteLoading={deletingId === skillItem.id} 
                 />
               ))}
 
-              <Button onClick={onSave} label="حفظ" />
+                {/* Display old skill */}
+                {skillsListt.map((skill, index) => (
+                <SkillesEditCard
+                key={index}
+                initialValues={{
+                  skill: skill.skill_name_ar ? skill.skill_name_ar : skill.skill_name,
+                  id: skill.id
+                  }}
+                  onDelete={() => handleDelete(skill.id)} 
+                  deleteLoading={deletingId === skill.id}                 />
+              ))}
+
+              <Button label="حفظ" />
             </form>
           </div>
         </main>

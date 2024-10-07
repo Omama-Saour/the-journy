@@ -6,18 +6,26 @@ const EditableSection = ({
   content,
   children,
   editComponent: EditComponent,
+  summary,
+  education,
+  experiences,
+  skills,
+  languages,
+  certificates,
+  references,
   onSave,
   onRefresh,
 }) => {
 
-  const [isEditing, setIsEditing] = useState(false); // State to manage the edit form visibility
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleEditClick = () => {
-    setIsEditing(true); // Show the PersonalInfoEdit component
+    setIsEditing(true); 
   };
 
   const handleClose = () => {
-    setIsEditing(false); // Hide the PersonalInfoEdit component
+    setIsEditing(false); 
+    onRefresh();
   };
 
   return (
@@ -28,7 +36,6 @@ const EditableSection = ({
         className="gap-2.5 self-stretch w-[150px] h-[50px] px-8 py-2 my-auto text-base font-medium leading-none text-white bg-neutral-800 min-h-[40px] rounded-[32px] max-md:px-5"
         onClick={handleEditClick}>
           تعديل
-
         </button>
         <h2 className="self-stretch my-auto text-base font-bold text-neutral-800">
           {title}
@@ -41,7 +48,7 @@ const EditableSection = ({
 
     {/* Conditional rendering of components */}
     {isEditing && (
-       <EditComponent onSave={handleClose} onRefresh={onRefresh} />
+       <EditComponent onSave={handleClose} summary={summary} education={education} experiences={experiences} skills={skills} languages={languages} certificates={certificates} references={references}/>
     )}
   </>
   );

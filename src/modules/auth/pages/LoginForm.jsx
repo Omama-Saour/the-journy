@@ -17,9 +17,9 @@ function LoginForm() {
     setPasswordShown(!passwordShown);
   };
 
-  const [error, setError] = useState(""); // حالة الخطأ
-  const [showLoading, setShowLoading] = useState(false); // حالة التحميل
-  const [showSuccess, setShowSuccess] = useState(false); // حالة النجاح
+  const [error, setError] = useState("");
+  const [showLoading, setShowLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const isFormValid = () => {
     return form.identifier && form.password;
   };
@@ -32,23 +32,22 @@ function LoginForm() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    setShowLoading(true); // بدء واجهة التحميل
-    setShowSuccess(false); // إعادة تعيين حالة النجاح
-    setError(""); // إعادة تعيين الأخطاء السابقة
+    setShowLoading(true);
+    setShowSuccess(false);
+    setError("");
 
     try {
-      await LOGIN(form); // استدعاء دالة تسجيل الدخول
-      setShowSuccess(true); // إذا نجحت العملية
+      await LOGIN(form);
+      setShowSuccess(true);
     } catch (err) {
-      console.error("Login error details:", err.response); // طباعة معلومات الخطأ كاملة
+      console.error("Login error details:", err.response);
 
-      // في حال كان هناك رسائل خطأ مخصصة
       const errorMessage =
         err?.response?.data?.message || "حدث خطأ أثناء تسجيل الدخول";
-      setError("يوجد خطأ بادخال اسم المستخدم أو كلمة المرور"); // تعيين رسالة الخطأ
-      console.log("errrrrrrr", errorMessage); // طباعة رسالة الخطأ بعد تعيينها
+      setError("يوجد خطأ بادخال اسم المستخدم أو كلمة المرور");
+      console.log("error", errorMessage);
     } finally {
-      setShowLoading(false); // إيقاف واجهة التحميل
+      setShowLoading(false);
     }
   };
 
@@ -61,8 +60,8 @@ function LoginForm() {
       <Form className="text-end" onSubmit={handleLogin}>
         <Form.Group controlId="formBasicEmail">
           <Form.Label className="fw-bold">البريد الإلكتروني</Form.Label>
-          <Form.Control
-            className="rounded-5 mb-2 text-end p-2"
+          <input
+            className="w-full p-2 rounded-5 mb-3 text-end border focus:outline-none focus:ring-2 focus:ring-black"
             type="email"
             placeholder="ادخل البريد الإلكتروني"
             name="identifier"
@@ -80,12 +79,12 @@ function LoginForm() {
               style={{
                 cursor: "pointer",
                 left: "10px",
-                top: "50%",
+                top: "35%",
                 transform: "translateY(-50%)",
               }}
             />
-            <Form.Control
-              className="rounded-5 mb-2 text-end p-2 ps-5"
+            <input
+              className="w-full p-2 rounded-5 mb-3 text-end border focus:outline-none focus:ring-2 focus:ring-black"
               type={passwordShown ? "text" : "password"}
               placeholder="ادخل كلمة المرور"
               name="password"
@@ -102,22 +101,19 @@ function LoginForm() {
           <Form.Check reverse label="تذكرني" />
         </div>
         <Button
-          style={{   backgroundColor: isFormValid() ? "black" : "#BDBFC4" }}
+          style={{ backgroundColor: isFormValid() ? "black" : "#BDBFC4" }}
           className={`border-0 rounded-5 w-100 mt-3 p-2 fs-5 `}
           type="submit"
-          disabled={!isFormValid()} // الزر معطل إذا كانت الحقول غير صالحة
+          disabled={!isFormValid()}
         >
           تسجيل دخول
         </Button>
 
-        {/* عرض واجهة التحميل */}
         <Loadding show={showLoading} />
       </Form>
 
-      {/* عرض رسالة الخطأ إذا وجدت */}
       {error && <p className="text-danger mt-3">{error}</p>}
 
-      {/* عرض واجهة النجاح إذا لم يوجد خطأ وتم تسجيل الدخول بنجاح */}
       {!error && showSuccess && <SuccessLogin show={showSuccess} />}
     </>
   );

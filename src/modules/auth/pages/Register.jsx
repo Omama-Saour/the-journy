@@ -10,7 +10,7 @@ function Register() {
   return (
     <>
       <Nav />
-      <div className=" p-2" style={{ marginTop: "110px" }}>
+      <div className=" p-2 mt-2">
         <Row className=" w-100">
           <Col xs="6">
             <Colimage/>

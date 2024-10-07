@@ -27,7 +27,7 @@ function App() {
       {/* <Register /> */}
       <Routes>
 
-        <Route path="/" element= { <Login /> }/>
+        <Route path="/" element= { <LandingFirstPage /> }/>
         {/* <Route path="/" element= { <LandingFirstPage /> }/>   */}
         
         {/* Landing */}

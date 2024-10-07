@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 function Nav() {
   const navigate=useNavigate()
   return (
-    <Navbar className=" fixed-top bg-white">
+    <Navbar className="bg-white">
       <Container>
         <Navbar.Brand>
           <Button

@@ -1,8 +1,8 @@
 import { Spinner } from "react-bootstrap";
 import React from "react";
 
-function Loadding({ show }) {
-  if (!show) return null; 
+function Loading({ show }) {
+  if (!show) return null; // Don't render anything if not visible
 
   return (
     <>
@@ -14,10 +14,15 @@ function Loadding({ show }) {
             <Spinner animation="grow" variant="primary" />
             <Spinner animation="grow" variant="primary" />
           </div>
+          <p dir="rtl" className="mt-4 text-lg text-center text-gray-700">
+            جاري التحميل...
+            <br />
+            قد تستغرق هده العملية بعض الوقت، يرجى الانتظار حتى يتم التحميل بنجاح
+          </p>
         </main>
       </section>
     </>
   );
 }
 
-export default Loadding;
+export default Loading;

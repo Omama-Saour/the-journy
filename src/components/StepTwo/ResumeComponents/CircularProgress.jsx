@@ -5,7 +5,7 @@ const CircularProgress = ({ value }) => {
   const strokeWidth = 12; // Width of the stroke
   const normalizedRadius = radius - strokeWidth * 0.5;
   const circumference = normalizedRadius * 2 * Math.PI;
-  const offset = circumference - (value / 100) * circumference;
+  const offset = circumference - (value*10 / 100) * circumference;
 
   return (
     <svg height={radius * 2} width={radius * 2}>
@@ -37,7 +37,7 @@ const CircularProgress = ({ value }) => {
         fontWeight="bold" 
         fill="#4c6ef5" 
       >
-        {value}
+        {value*10}
       </text>
     </svg>
   );

@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import InputField from "../EducationForm/InputField";
 import Button from "../EducationForm/Button";
 import CertificateEditCard from "./CertificateEditCard";
 import icon from "../../../../../src/assets/personltyTest/Vector.png";
 import plus from "../../../../../src/assets/StepTwo/plus.png";
-
-const CertificateEdit = ({ onSave }) => {
-  const educationFields = [
-    { label: "الشهادة", placeholder: "أدخل اسم الشهادة" },
-  ];
-
+import DatePicker from "../EducationForm/DatePicker";
+const CertificateEdit = ({ onSave , certificates}) => {
+  const [certDate, setCertDate] = useState("");
+  // delete 
+  // const [deletingId, setDeletingId] = useState(null);
+  // const [deleteLoading, setDeleteLoading] = useState(false);
+  // const [deleteError, setDeleteError] = useState(null);
   return (
     <>
       <div className="fixed inset-0 bg-black opacity-50 z-40"></div>
@@ -24,36 +25,28 @@ const CertificateEdit = ({ onSave }) => {
                 src={icon}
                 className="object-contain self-stretch my-auto w-8 aspect-square"
                 alt=""
-                onClick={onSave} // Close the window when the icon is clicked
+                onClick={onSave} 
               />
             </div>
           <div className="overflow-y-auto max-h-[500px] w-full px-5">
-            {" "}
+          
             <form className="flex z-0 flex-col justify-center mt-8 w-full">
-              <div className="flex flex-wrap gap-8 items-start w-full text-sm text-neutral-800">
-                {educationFields.slice(0, 2).map((field, index) => (
-                  <InputField
-                    key={index}
-                    label={field.label}
-                    placeholder={field.placeholder}
+            <div className="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+            <div dir="rtl" className=" w-1/2">    <DatePicker
+                    label="تاريخ الشهادة"
+                    value={certDate}
+                    onChange={setCertDate}
                   />
-                ))}
-              </div>
-
-              <div className="flex flex-wrap gap-8 pl-8 items-start w-full">
-                {educationFields.slice(2).map((field, index) => (
-                  <div key={index} className="w-1/2 ml-auto">
-                    <InputField
-                      label={field.label}
-                      placeholder={field.placeholder}
-                    />
                   </div>
-                ))}
+                  <InputField
+                    label= "الشهادة"
+                    placeholder="أدخل اسم الشهادة" 
+                  />
               </div>
 
               <button 
               className="flex gap-1 justify-center items-center self-center mt-4 text-base font-extrabold tracking-wider leading-snug text-neutral-800"
-              onClick={null}
+              // onClick={null}
               >
                 اضافة شهادة جديدة
                 <img
@@ -64,13 +57,19 @@ const CertificateEdit = ({ onSave }) => {
                 />
               </button>
 
-              <CertificateEditCard
+                  {/* Display old certificates */}
+                  {certificates.map((certificates, index) => (
+                <CertificateEditCard
+                key={index}
                 initialValues={{
-                 skill : "شهادة خيرة",
+                  cert: certificates.certificate_name,
+                  certDate: certificates.certificate_date,
+                  id: certificates.id
                 }}
-              />
+                />
+              ))}
 
-              <Button onClick={onSave} label="حفظ" />
+              <Button label="حفظ" />
             </form>
           </div>
         </main>

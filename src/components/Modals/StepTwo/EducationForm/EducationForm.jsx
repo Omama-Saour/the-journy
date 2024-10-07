@@ -6,9 +6,10 @@ import Button from "./Button";
 import EducationFormCard from "./EducationFormCard";
 import icon from "../../../../../src/assets/personltyTest/Vector.png";
 import plus from "../../../../../src/assets/StepTwo/plus.png";
-import { Post_Education } from "../../../../modules/steps/steptwo/service";
+import { Post_Education } from "../../../../modules/steps/steptwo/service";   
+import { Delete_Education } from "../../../../modules/steps/steptwo/service";   
 
-const EducationForm = ({ onSave }) => {
+const EducationForm = ({ onSave, education }) => {
   const [college, setCollege] = useState("");
   const [university, setUniversity] = useState("");
   const [specialization, setSpecialization] = useState("");
@@ -18,6 +19,10 @@ const EducationForm = ({ onSave }) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [educationList, setEducationList] = useState([]);
+  const [educationListt, setEducationListt] = useState(education);
+  const [deletingId, setDeletingId] = useState(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteError, setDeleteError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +37,9 @@ const EducationForm = ({ onSave }) => {
       };
 
       const response = await Post_Education(data);
-      setEducationList([...educationList, data]);
+    const newEducation = { ...data, id: response.data.id };
+    
+    setEducationList([...educationList, newEducation]);
       setCollege("");
       setUniversity("");
       setSpecialization("");
@@ -44,6 +51,28 @@ const EducationForm = ({ onSave }) => {
       setError("فشل في إضافة التعليم. حاول مرة أخرى");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    setDeleteLoading(true);
+    setDeleteError(null);
+    setDeletingId(id);
+    try {
+      let response = await Delete_Education(id);
+
+// Update educationList state to remove the item
+setEducationList((prevList) => prevList.filter((edu) => edu.id !== id));
+
+// If education is also in the state and you want to update it
+setEducationListt((prevEducation) => prevEducation.filter((edu) => edu.id !== id));
+
+      console.log(response)
+    } catch (error) {
+      setDeleteError("فشل في حذف التعليم. حاول مرة أخرى");
+    } finally {
+      setDeleteLoading(false);
+      setDeletingId(null);
     }
   };
 
@@ -155,10 +184,31 @@ const EducationForm = ({ onSave }) => {
                     endDate: education.university_end_date,
                     isCurrentlyStudying: education.isCurrentlyStudying,
                     specialization: education.specialization,
+                    id: education.id
                   }}
+                  onDelete={() => handleDelete(education.id)} 
+                  deleteLoading={deletingId === education.id} 
                 />
               ))}
 
+               {/* Display old education */}
+               {educationListt.map((educationn, index) => (
+                <EducationFormCard
+                  isNewEducation
+                  key={index}
+                  initialValues={{
+                    university: educationn.university_name,
+                    college: educationn.university_location,
+                    startDate: educationn.university_start_date,
+                    endDate: educationn.university_end_date,
+                    isCurrentlyStudying: educationn.isCurrentlyStudying,
+                    specialization: educationn.specialization,
+                    id: educationn.id
+                  }}
+                  onDelete={() => handleDelete(educationn.id)} 
+                  deleteLoading={deletingId === educationn.id}
+                />
+              ))}
               <Button onClick={onSave} label="حفظ" />
             </form>
           </div>

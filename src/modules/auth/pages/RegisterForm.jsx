@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
@@ -21,7 +20,7 @@ function RegisterForm() {
   const [showWaitting, setShowWaitting] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [errorMessages, setErrorMessages] = useState({}); // لتخزين الأخطاء بشكل منفصل
+  const [errorMessages, setErrorMessages] = useState({});
 
   const togglePasswordVisibility = () => {
     setPasswordShown(!passwordShown);
@@ -45,43 +44,38 @@ function RegisterForm() {
   const handle_submit = async (e) => {
     e.preventDefault();
 
-    setShowWaitting(true); // إظهار واجهة الانتظار أولاً
-    setErrorMessages({}); // إعادة تعيين الأخطاء السابقة
+    setShowWaitting(true);
+    setErrorMessages({});
 
     try {
       setTimeout(async () => {
-        setShowWaitting(false); // إيقاف واجهة الانتظار
-        setShowLoading(true); // بدء واجهة التحميل
+        setShowWaitting(false);
+        setShowLoading(true);
 
         try {
           await REGISTER(form);
-
-          // بعد نجاح العملية، إيقاف واجهة التحميل وعرض النجاح
           setShowLoading(false);
           setShowSuccess(true);
         } catch (error) {
           const errorResponse = error?.response?.data?.errors || {};
           const newErrorMessages = {};
-
-          // إضافة الأخطاء الفردية إلى الكائن
           if (errorResponse.email) {
-            newErrorMessages.email = errorResponse.email[0]; // الخطأ الخاص بالبريد الإلكتروني
+            newErrorMessages.email = errorResponse.email[0];
           }
           if (errorResponse.phone) {
             newErrorMessages.phone = errorResponse.phone[0]; // الخطأ الخاص برقم الهاتف
           }
           if (errorResponse.password_confirmation) {
-            newErrorMessages.password_confirmation = errorResponse.password_confirmation[0]; // الخطأ الخاص بتأكيد كلمة المرور
+            newErrorMessages.password_confirmation =
+              errorResponse.password_confirmation[0]; // الخطأ الخاص بتأكيد كلمة المرور
           }
-          
+
           // تعيين الرسائل العامة إذا وُجدت
           if (Object.keys(newErrorMessages).length === 0) {
             newErrorMessages.general = "حدث خطأ أثناء إنشاء الحساب";
           }
 
           setErrorMessages(newErrorMessages); // تعيين الأخطاء في الحالة
-
-          // إيقاف واجهة التحميل
           setShowLoading(false);
         }
       }, 2000); // واجهة الانتظار تظهر لمدة ثانيتين
@@ -98,12 +92,12 @@ function RegisterForm() {
         <h6>أنت على بعد دقيقتين لبدأ رحلتك</h6>
       </div>
       <Form className="text-end" onSubmit={handle_submit}>
-        {/* حقول النموذج تبقى كما هي */}
         <div className="d-flex justify-content-between">
           <Form.Group controlId="formBasicFirstName" style={{ width: "320px" }}>
             <Form.Label className="fw-bold">الأسم الأخير</Form.Label>
-            <Form.Control
-              className="rounded-5 text-end p-2"
+
+            <input
+              className="w-full p-2 rounded-5 mb-3 mr-2 text-end border focus:outline-none focus:ring-2 focus:ring-black"
               type="text"
               placeholder="أدخل الاسم الاخير"
               name="last_name"
@@ -115,8 +109,9 @@ function RegisterForm() {
 
           <Form.Group controlId="formBasicLastName" style={{ width: "320px" }}>
             <Form.Label className="fw-bold">الاسم الأول</Form.Label>
-            <Form.Control
-              className="rounded-5 mb-3 text-end p-2"
+
+            <input
+              className="w-full p-2 rounded-5 mb-3 ml-2 text-end border focus:outline-none focus:ring-2 focus:ring-black"
               type="text"
               placeholder="ادخل الاسم الأول"
               name="first_name"
@@ -129,8 +124,8 @@ function RegisterForm() {
 
         <Form.Group controlId="formBasicEmail">
           <Form.Label className="fw-bold">البريد الإلكتروني</Form.Label>
-          <Form.Control
-            className="rounded-5 mb-2 text-end p-2"
+          <input
+            className="w-full p-2 rounded-5 mb-3 text-end border focus:outline-none focus:ring-2 focus:ring-black"
             type="email"
             placeholder="ادخل البريد الإلكتروني"
             name="email"
@@ -139,13 +134,16 @@ function RegisterForm() {
             required
           />
           {/* عرض رسالة الخطأ الخاصة بالبريد الإلكتروني */}
-          {errorMessages.email && <p className="text-danger">{errorMessages.email}</p>}
+          {errorMessages.email && (
+            <p className="text-danger">{errorMessages.email}</p>
+          )}
         </Form.Group>
 
         <Form.Group controlId="formBasicMobile">
           <Form.Label className="fw-bold">رقم الجوال</Form.Label>
-          <Form.Control
-            className="rounded-5 mb-2 text-end p-2"
+
+          <input
+            className="w-full p-2 rounded-5 mb-3 text-end border focus:outline-none focus:ring-2 focus:ring-black"
             type="tel"
             placeholder="ادخل رقم الجوال"
             name="phone"
@@ -154,7 +152,9 @@ function RegisterForm() {
             required
           />
           {/* عرض رسالة الخطأ الخاصة برقم الجوال */}
-          {errorMessages.phone && <p className="text-danger">{errorMessages.phone}</p>}
+          {errorMessages.phone && (
+            <p className="text-danger">{errorMessages.phone}</p>
+          )}
         </Form.Group>
 
         <Form.Group controlId="formBasicPassword">
@@ -166,12 +166,13 @@ function RegisterForm() {
               style={{
                 cursor: "pointer",
                 left: "10px",
-                top: "50%",
+                top: "35%",
                 transform: "translateY(-50%)",
               }}
             />
-            <Form.Control
-              className="rounded-5 mb-2 text-end p-2 ps-5"
+
+            <input
+              className="w-full p-2 rounded-5 mb-3 text-end border focus:outline-none focus:ring-2 focus:ring-black"
               type={passwordShown ? "text" : "password"}
               placeholder="ادخل كلمة المرور"
               name="password"
@@ -191,12 +192,13 @@ function RegisterForm() {
               style={{
                 cursor: "pointer",
                 left: "10px",
-                top: "50%",
+                top: "35%",
                 transform: "translateY(-50%)",
               }}
             />
-            <Form.Control
-              className="rounded-5 mb-2 text-end p-2 ps-5"
+
+            <input
+              className="w-full p-2 rounded-5 mb-3 text-end border focus:outline-none focus:ring-2 focus:ring-black"
               type={passwordShown ? "text" : "password"}
               placeholder="تأكيد كلمة المرور"
               name="password_confirmation"
@@ -206,32 +208,51 @@ function RegisterForm() {
             />
           </div>
           {/* عرض رسالة الخطأ الخاصة بتأكيد كلمة المرور */}
-          {errorMessages.password_confirmation && <p className="text-danger">{errorMessages.password_confirmation}</p>}
+          {errorMessages.password_confirmation && (
+            <p className="text-danger">{errorMessages.password_confirmation}</p>
+          )}
         </Form.Group>
 
         <Row className="">
-  <Col xs="6" className="mb-2 d-flex align-items-center justify-content-end">
-    <span style={{ marginLeft: "8px" }}>رقم واحد على الأقل</span>
-    <Icon.CheckLg style={{ color: "gray" }} />
-  </Col>
-  <Col xs="6" className="mb-2 d-flex align-items-center justify-content-end">
-    <span style={{ marginLeft: "8px" }}>الحد الأدنى للطول هو 8 أحرف</span>
-    <Icon.CheckLg style={{ color: "gray" }} />
-  </Col>
-  <Col xs="6" className="mb-2 d-flex align-items-center justify-content-end">
-    <span style={{ marginLeft: "8px" }}>حرف خاص واحد على الأقل</span>
-    <Icon.CheckLg style={{ color: "gray" }} />
-  </Col>
-  <Col xs="6" className="mb-2 d-flex align-items-center justify-content-end">
-    <span style={{ marginLeft: "8px" }}>حرف واحد كبير على الأقل</span>
-    <Icon.CheckLg style={{ color: "gray" }} />
-  </Col>
-  <Col xs="6"></Col>
-  <Col xs="6" className="mb-3 d-flex align-items-center justify-content-end">
-    <span style={{ marginLeft: "8px" }}>حرف واحد صغير على الأقل</span>
-    <Icon.CheckLg style={{ color: "gray" }} />
-  </Col>
-</Row>
+          <Col
+            xs="6"
+            className="mb-2 d-flex align-items-center justify-content-end"
+          >
+            <span style={{ marginLeft: "8px" }}>رقم واحد على الأقل</span>
+            <Icon.CheckLg style={{ color: "gray" }} />
+          </Col>
+          <Col
+            xs="6"
+            className="mb-2 d-flex align-items-center justify-content-end"
+          >
+            <span style={{ marginLeft: "8px" }}>
+              الحد الأدنى للطول هو 8 أحرف
+            </span>
+            <Icon.CheckLg style={{ color: "gray" }} />
+          </Col>
+          <Col
+            xs="6"
+            className="mb-2 d-flex align-items-center justify-content-end"
+          >
+            <span style={{ marginLeft: "8px" }}>حرف خاص واحد على الأقل</span>
+            <Icon.CheckLg style={{ color: "gray" }} />
+          </Col>
+          <Col
+            xs="6"
+            className="mb-2 d-flex align-items-center justify-content-end"
+          >
+            <span style={{ marginLeft: "8px" }}>حرف واحد كبير على الأقل</span>
+            <Icon.CheckLg style={{ color: "gray" }} />
+          </Col>
+          <Col xs="6"></Col>
+          <Col
+            xs="6"
+            className="mb-3 d-flex align-items-center justify-content-end"
+          >
+            <span style={{ marginLeft: "8px" }}>حرف واحد صغير على الأقل</span>
+            <Icon.CheckLg style={{ color: "gray" }} />
+          </Col>
+        </Row>
 
         <Form.Check
           reverse
@@ -252,7 +273,9 @@ function RegisterForm() {
         </Button>
 
         {/* عرض رسالة الخطأ العامة إذا وُجدت */}
-        {errorMessages.general && <p className="text-danger mt-3">{errorMessages.general}</p>}
+        {errorMessages.general && (
+          <p className="text-danger mt-3">{errorMessages.general}</p>
+        )}
 
         <Waitting show={showWaitting} />
         <Loadding show={showLoading} />

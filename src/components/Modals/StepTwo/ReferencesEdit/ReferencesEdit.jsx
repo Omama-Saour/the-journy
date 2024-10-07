@@ -4,15 +4,20 @@ import Button from "../EducationForm/Button";
 import ReferencesEditCard from "./ReferencesEditCard";
 import icon from "../../../../../src/assets/personltyTest/Vector.png";
 import plus from "../../../../../src/assets/StepTwo/plus.png";
-import { Post_References } from "../../../../modules/steps/steptwo/service"; // Import the Post_References method
+import { Post_References } from "../../../../modules/steps/steptwo/service"; 
+import { Delete_References } from "../../../../modules/steps/steptwo/service"; 
 
-const ReferencesEdit = ({ onSave }) => {
+const ReferencesEdit = ({ onSave, references }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
-  const [referencesList, setReferencesList] = useState([]); // Track list of references
-  const [error, setError] = useState(null); // Track any API errors
-  const [loading, setLoading] = useState(false); // Track loading state
+  const [referencesList, setReferencesList] = useState([]); 
+  const [referencesListt, setReferencesListt] = useState(references); 
+  const [error, setError] = useState(null); 
+  const [loading, setLoading] = useState(false); 
+  const [deletingId, setDeletingId] = useState(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteError, setDeleteError] = useState(null);
 
   const handleAddReference = async (e) => {
     e.preventDefault();
@@ -23,16 +28,38 @@ const ReferencesEdit = ({ onSave }) => {
         ref_last_name: lastName,
         ref_phone: phone,
       });
-      // console.log("Status Code:", response.status);
-      setReferencesList([...referencesList, response.data]); // Add the new reference to the list
+      const newRef = { ...response.data, id: response.data.id };
+      setReferencesList([...referencesList, newRef]);
       setFirstName("");
       setLastName("");
       setPhone("");
-      setError(null); // Clear any previous errors
+      setError(null); 
     } catch (error) {
-      setError("فشل في إضافة المرجع. حاول مرة أخرى"); // Handle error
+      setError("فشل في إضافة المرجع. حاول مرة أخرى"); 
     } finally {
-      setLoading(false); // Reset loading state after the API call
+      setLoading(false); 
+    }
+  };
+
+  const handleDelete = async (id) => {
+    setDeleteLoading(true);
+    setDeleteError(null);
+    setDeletingId(id);
+    try {
+      let response = await Delete_References(id);
+
+// Update educationList state to remove the item
+setReferencesList((prevList) => prevList.filter((edu) => edu.id !== id));
+
+// If education is also in the state and you want to update it
+setReferencesListt((prevEducation) => prevEducation.filter((edu) => edu.id !== id));
+
+      console.log(response)
+    } catch (error) {
+      setDeleteError("فشل في حذف التعليم. حاول مرة أخرى");
+    } finally {
+      setDeleteLoading(false);
+      setDeletingId(null);
     }
   };
 
@@ -50,7 +77,7 @@ const ReferencesEdit = ({ onSave }) => {
               src={icon}
               className="object-contain self-stretch my-auto w-8 aspect-square"
               alt=""
-              onClick={onSave} // Close the window when the icon is clicked
+              onClick={onSave} 
             />
           </div>
           <div className="overflow-y-auto max-h-[500px] w-full px-5">
@@ -61,13 +88,13 @@ const ReferencesEdit = ({ onSave }) => {
                   label="الكنية"
                   placeholder="أدخل الكنية"
                   value={lastName}
-                  onChange={(e) => setLastName(e.target.value)} // Capture last name input
+                  onChange={(e) => setLastName(e.target.value)}
                 />
               <InputField
                   label="الاسم الأول"
                   placeholder="أدخل الاسم الأول"
                   value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)} // Capture first name input
+                  onChange={(e) => setFirstName(e.target.value)} 
                 />
               </div>
 
@@ -77,7 +104,7 @@ const ReferencesEdit = ({ onSave }) => {
                   label="رقم الهاتف"
                   placeholder="أدخل رقم الهاتف"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)} // Capture phone input
+                  onChange={(e) => setPhone(e.target.value)} 
                 />
               </div>
             
@@ -86,8 +113,8 @@ const ReferencesEdit = ({ onSave }) => {
 
               <button
                 className="flex gap-1 justify-center items-center self-center mt-4 text-base font-extrabold tracking-wider leading-snug text-neutral-800"
-                onClick={handleAddReference} // Trigger reference addition on click
-                disabled={loading} // Disable button while loading
+                onClick={handleAddReference} 
+                disabled={loading} 
               >
                 {loading ? (
                   <div className="flex justify-center items-center mt-10">
@@ -117,11 +144,29 @@ const ReferencesEdit = ({ onSave }) => {
                     firstName: reference.ref_first_name,
                     lastName: reference.ref_last_name,
                     phone: reference.ref_phone,
+                    id: reference.id
                   }}
+                  onDelete={() => handleDelete(reference.id)} 
+                  deleteLoading={deletingId === reference.id} 
                 />
               ))}
 
-              <Button onClick={onSave} label="حفظ" />
+                  {/* Display old references */}
+                  {referencesListt.map((references, index) => (
+                <ReferencesEditCard
+                key={index}
+                initialValues={{
+                  firstName: references.first_name,
+                  lastName: references.last_name,
+                  phone: references.phone,
+                  id: references.id
+                }}
+                onDelete={() => handleDelete(references.id)} 
+                deleteLoading={deletingId === references.id} 
+                />
+              ))}
+
+              <Button label="حفظ" />
             </form>
           </div>
         </main>

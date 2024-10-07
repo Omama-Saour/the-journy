@@ -27,7 +27,7 @@ function SuccessLogin({ show }) {
           </p>
           <p style={{ fontSize: "22px" }}>لنبدأ رحلتنا</p>
           <Button
-            onClick={() =>navigate('/StepNTwo',{replace:true}) }
+            onClick={() =>navigate('/StepNone',{replace:true}) }
             className="border-0 rounded-5 w-50 mt-3 p-3 fs-5 bg-black"
             // style={{ backgroundColor: "#BDBFC4" }}
           >

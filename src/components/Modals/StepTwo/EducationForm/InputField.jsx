@@ -11,7 +11,7 @@ const InputField = ({ label, placeholder, value, onChange }) => {
         className="flex gap-2.5 items-start px-4 py-3 mt-1 w-full bg-white border border-violet-200 border-solid min-h-[48px] rounded-[32px]"
         placeholder={placeholder}
         aria-label={label}
-        value={value} // Bind the input value to state
+        value={value} 
         onChange={onChange} // Capture the change event
       />
     </div>

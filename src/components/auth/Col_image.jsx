@@ -12,8 +12,7 @@ import image9 from "../../assets/auth/Frame 1bbbb4415.png";
 function Col_image() {
   return (
     <>
-        <Col xs="6" style={{ width: "624px", height: "852px" }}>
-            {/* <Image src={image} style={{ width: "624px", height: "852px" }} /> */}
+        <Col xs="6" style={{ width: "624px"}}>
             <Row>
               <Col>
                 <Image src={image1}style={{ position: "relative", top: "5px" }} />{" "}
@@ -33,7 +32,6 @@ function Col_image() {
                   <Image src={image4} style={{ position: "relative", top: "21px" }}/>
                 </Col>
               </Row>
-              {/*  */}
             <Row>
               <Col>
                 <Image src={image6}style={{ position: "relative", top: "46px" }} />{" "}

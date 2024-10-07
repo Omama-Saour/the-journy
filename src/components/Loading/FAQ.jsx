@@ -6,10 +6,10 @@ const FAQItem = ({ question, index, isOpen, onClick }) => (
     className={`px-4 py-4 mt-2 w-full rounded-2xl cursor-pointer ${
       isOpen ? "bg-neutral-800 text-white" : "bg-indigo-300 bg-opacity-10"
     } max-md:max-w-full`} 
-     dir="rtl"
     onClick={onClick}
   >
-    <div dir="ltr" className="flex flex-wrap gap-10 justify-between items-center text-end text-lg font-extrabold leading-loose">
+    <div className="flex flex-wrap gap-10 justify-between items-center text-end text-lg font-extrabold leading-loose">
+    <div className="text-right text-[0.9rem]">{question}</div>
       {isOpen && (
         <img
           loading="lazy"
@@ -18,13 +18,13 @@ const FAQItem = ({ question, index, isOpen, onClick }) => (
           className="object-contain shrink-0 self-stretch my-auto w-6 aspect-square"
         />
       )}
-      <div className="text-right text-[0.9rem]">{question}</div>
+     
     </div>
   </div>
 );
 
 const FAQ = () => {
-  const [openIndex, setOpenIndex] = useState(null);
+  const [openIndex, setOpenIndex] = useState(0);
 
   const faqItems = [
     {
@@ -77,15 +77,14 @@ const FAQ = () => {
             </p>
           </div>
         </div>
-        <div className="flex overflow-hidden flex-col grow shrink self-end text-lg text-right font-extrabold leading-loose min-w-[240px] w-[483px] max-md:max-w-full">
+        <div dir="rtl" className="flex overflow-hidden flex-col grow shrink self-end text-lg text-right font-extrabold leading-loose min-w-[240px] w-[483px] max-md:max-w-full">
           {faqItems.map((item, index) => (
             <FAQItem
-            // style={{ TextCenter: 'text-right'}}
               key={index}
               question={item.question}
               index={index}
               isOpen={index === openIndex}
-              onClick={() => setOpenIndex(index === openIndex ? null : index)}
+              onClick={() => setOpenIndex(index === openIndex ? 0 : index)}
             />
           ))}
         </div>

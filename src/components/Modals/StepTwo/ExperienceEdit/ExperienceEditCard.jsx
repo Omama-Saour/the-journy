@@ -1,24 +1,20 @@
 import React from "react";
-import InputField from "./InputField";
-import DatePicker from "./DatePicker";
-import CheckboxField from "./CheckboxField";
+import InputField from "../EducationForm/InputField";
+import DatePicker from "../EducationForm/DatePicker";
+import CheckboxField from "../EducationForm/CheckboxField";
 import deletee from "../../../../assets/StepTwo/delete.png";
 
-const EducationFormCard = ({
-  isNewEducation = false,
-  initialValues,
-  onDelete,
-  deleteLoading,
-}) => {
+const ExperienceEditCard = ({ isNewExperience = false, initialValues, onDelete, deleteLoading }) => {
   return (
     <form
       className={`flex flex-col w-full ${
-        isNewEducation
+        isNewExperience
           ? "px-6 pt-2 pb-4 mt-4 bg-white border-2 border-solid border-neutral-800 rounded-[32px]"
           : ""
       }`}
     >
-      {isNewEducation &&
+
+{isNewExperience &&
         (deleteLoading ? (
           <div className="object-contain w-8 aspect-square cursor-pointer">
             <div className="loader"></div>
@@ -32,21 +28,24 @@ const EducationFormCard = ({
             className="object-contain w-8 aspect-square cursor-pointer"
           />
         ))}
+
       <div
         className={`flex flex-col ${
-          isNewEducation ? "mt-3" : ""
+          isNewExperience ? "mt-3" : ""
         } w-full max-md:max-w-full`}
       >
         <div className="flex flex-wrap gap-8 items-start w-full text-sm text-neutral-800 max-md:max-w-full">
           <InputField
-            label="الجامعة"
-            placeholder="أدخل اسم الجامعة"
-            value={initialValues?.university || ""}
+            label="الشركة"
+            placeholder="أدخل الشركة"
+            value={initialValues?.company || ""}
+            readOnly
           />
           <InputField
-            label="الكلية"
-            placeholder="أدخل الكلية"
-            value={initialValues?.college || ""}
+            label="الوظيفة"
+            placeholder="أدخل اسم الوظيفة"
+            value={initialValues?.job || ""}
+            readOnly
           />
         </div>
 
@@ -56,11 +55,13 @@ const EducationFormCard = ({
               label="تاريخ الانتهاء"
               value={initialValues.endDate || ""}
               disabled={true}
+              readOnly
             />
             <CheckboxField
-              label="مازلت تدرس"
-              checked={!initialValues.endDate}
+              label="مازلت تعمل لديهم"
+              checked={!initialValues.endDate} 
               disabled={true}
+              readOnly
             />
           </div>
           <div dir="rtl" className="flex-grow">
@@ -68,16 +69,20 @@ const EducationFormCard = ({
               label="تاريخ البدأ"
               value={initialValues.startDate || ""}
               disabled={true}
+              readOnly
             />
           </div>
         </div>
-
-        <div className="flex flex-wrap gap-8 pl-8 items-start w-full">
-          <div className="w-1/2 ml-auto">
-            <InputField
-              label="التخصص"
-              placeholder="أدخل التخصص"
-              value={initialValues?.specialization || ""}
+        <div className="flex flex-col mt-4 w-full text-sm max-md:max-w-full">
+          <div className="flex flex-col w-full max-md:max-w-full">
+            <label className="gap-1 self-stretch w-full font-bold text-right whitespace-nowrap h-[22px] text-neutral-800 max-md:max-w-full">
+              المسؤوليات
+            </label>
+            <textarea
+              placeholder="أدخل المسؤوليات"
+              value={initialValues?.responsibiltes || ""}
+              readOnly
+              className="flex gap-2.5 items-start px-4 pt-3 pb-24 mt-2 w-full text-right bg-white border border-violet-200 border-solid min-h-[132px] rounded-[32px] text-neutral-800 max-md:max-w-full"
             />
           </div>
         </div>
@@ -86,4 +91,4 @@ const EducationFormCard = ({
   );
 };
 
-export default EducationFormCard;
+export default ExperienceEditCard;
