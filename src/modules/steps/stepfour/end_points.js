@@ -2,7 +2,7 @@
 export const GetquestionsNumber = '/questions'
 
 // Get Question Detials
-export const GetquestionDetails = '/questions/' // + id
+// export const GetquestionDetails = '/questions/' // + id
 // add path to video : https://journey.flaamingo.com/storage/
 
 // Send Question Answer

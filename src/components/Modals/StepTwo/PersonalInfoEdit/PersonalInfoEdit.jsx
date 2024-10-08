@@ -1,108 +1,3 @@
-// import React, { useState, useRef } from "react";
-// import InputField from "../EducationForm/InputField";
-// import Button from "../EducationForm/Button";
-// import icon from "../../../../../src/assets/personltyTest/Vector.png";
-
-// const PersonalInfoEdit = ({
-//   onSave,
-//   firstname,
-//   lastname,
-//   cityy,
-//   country,
-//   phone,
-//   email,
-//   initials,
-//   websiteurl,
-//   linkedinurl,
-// }) => {
-//   const [photo, setPhoto] = useState(null);
-//   const fileInputRef = useRef(null); 
-
-//   const handlePhotoUpload = (event) => {
-//     const file = event.target.files[0];
-//     if (file) {
-//       const imgURL = URL.createObjectURL(file);
-//       setPhoto(imgURL);
-//     }
-//   };
-
-//   const inputFields = [
-//     { label: "الاسم الاخير", defaultValue: lastname, placeholder: "أدخل الاسم الاخير" },
-//     { label: "الاسم الاول", defaultValue: firstname, placeholder: "أدخل الاسم الاول" },
-//     { label: "المحافظة", defaultValue: cityy, placeholder: "أدخل المحافظة" },
-//     { label: "الدولة", defaultValue: country, placeholder: "أدخل الدولة" },
-//     { label: "البريد الالكتروني", defaultValue: email, placeholder: "أدخل البريد الالكتروني" },
-//     { label: "رقم الهاتف", defaultValue: phone, placeholder: "أدخل رقم الهاتف" },
-//     { label: "لينك لينكدان", defaultValue: linkedinurl, placeholder: "أدخل لينك لينكدان" },
-//     { label: "رابط الموقع", defaultValue: websiteurl, placeholder: "أدخل رابط الموقع" },
-//   ];
-
-//   const handleButtonClick = () => {
-//     fileInputRef.current.click();
-//   };
-
-//   return (
-//     <>
-//       <div className="fixed inset-0 bg-black opacity-50 z-40"></div>
-//       <section className="fixed bottom-0 left-0 right-0 top-0 flex flex-col justify-center items-center px-5 py-4 z-50">
-//         <main className="flex relative flex-col justify-center pt-20 pb-8 bg-white rounded-3xl max-w-[850px] overflow-hidden max-md:px-5 max-md:py-24">
-//           <h1 className="flex z-0 flex-col w-full text-3xl font-bold leading-none text-center text-neutral-800 max-md:max-w-full">
-//             تعديل معلوماتك الشخصية
-//           </h1>
-
-//           <div className="overflow-y-auto w-full px-5">
-//             <section className="flex z-0 flex-col justify-center items-center self-center mt-10">
-//               <div className="flex flex-col max-w-full text-3xl font-semibold text-indigo-600 w-[100px]">
-//                 <div className="w-full bg-indigo-300 rounded-full h-[100px] max-md:px-5 flex justify-center items-center overflow-hidden">
-//                   {photo ? (
-//                     <img
-//                       src={photo}
-//                       alt="Uploaded"
-//                       className="object-cover w-full h-full rounded-full"
-//                     />
-//                   ) : (
-//                     initials // Show initials if no photo
-//                   )}
-//                 </div>
-//               </div>
-//               <input
-//                 type="file"
-//                 accept="image/*"
-//                 onChange={handlePhotoUpload}
-//                 className="hidden" // Hide the input
-//                 ref={fileInputRef} // Attach the ref to the input
-//               />
-//               <Button onClick={handleButtonClick} label="رفع صورة شخصية" />
-//             </section>
-//             <div className="flex absolute top-10 right-10 z-0 items-end w-[20px]">
-//               <img
-//                 loading="lazy"
-//                 src={icon}
-//                 className="object-contain self-stretch my-auto w-8 aspect-square"
-//                 alt=""
-//                 onClick={onSave} // Close the window when the icon is clicked
-//               />
-//             </div>
-//             <form className="flex z-0 flex-col mt-10 w-full text-sm text-neutral-800 max-md:max-w-full">
-//               <div className="flex flex-wrap gap-8 items-start w-full max-md:max-w-full">
-//                 {inputFields.map((field, index) => (
-//                   <InputField
-//                     key={index}
-//                     label={field.label}
-//                     placeholder={field.defaultValue || field.placeholder}
-//                   />
-//                 ))}
-//               </div>
-//               <Button label="حفظ" />
-//             </form>
-//           </div>
-//         </main>
-//       </section>
-//     </>
-//   );
-// };
-
-// export default PersonalInfoEdit;
 import React, { useState, useRef } from "react";
 import InputField from "../EducationForm/InputField";
 import Button from "../EducationForm/Button";
@@ -134,8 +29,8 @@ const PersonalInfoEdit = ({
     linkedin_url: linkedinurl,
   });
 
-  const [loading, setLoading] = useState(false); // Loading state
-  const [error, setError] = useState(null); // Error state
+  const [loading, setLoading] = useState(false); 
+  const [error, setError] = useState(null); 
 
   const fileInputRef = useRef(null); 
 
@@ -153,8 +48,8 @@ const PersonalInfoEdit = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission
-    setLoading(true); // Set loading state to true
-    setError(null); // Reset error state
+    setLoading(true); 
+    setError(null); 
 
     const dataToSend = {
       first_name: formData.first_name,
@@ -204,8 +99,31 @@ const PersonalInfoEdit = ({
           <h1 className="flex z-0 flex-col w-full text-3xl font-bold leading-none text-center text-neutral-800 max-md:max-w-full">
             تعديل معلوماتك الشخصية
           </h1>
-
           <div className="overflow-y-auto w-full px-5">
+
+          <p dir="rtl" className="mt-10 font-bold leading-none max-md:max-w-full">
+                لكتابة معلومات شخصية صحيحة:
+              </p>
+              <ol dir="rtl" className="mt-6 list-decimal text-lg list-inside max-md:max-w-full">
+                <li className="mb-3">
+                البريد الألكتروني: تأكد بأن صحيح وان يكون مهني وتستخدمه بشكل شبه يومي
+                </li>
+                <li className="mb-3">
+                رقم الهاتف: أن يكون الرقم المباشر وفعال
+                </li>
+                <li className="mb-3">رابط لينكدان: تأكد بأن يكون رابط صفحتك المباشر</li>
+            <li>
+
+                 الصورة الشخصية:  <br/> 
+يجب أن يكون لباسك مهني و صورة من الوقت الحالي<br/>
+
+لذلك ابتعد عن أن يكون رأسك مائل والصورة غير واضحة <br/>
+أن تستخدم خاصية السيلفي
+أن تستخدم صور قمت بأخذها من مناسبات اجتماعية وصورك بين أصدقائك وفقط تقوم بلصقها<br/>
+
+            </li>
+              </ol>
+
             <section className="flex z-0 flex-col justify-center items-center self-center mt-10">
               <div className="flex flex-col max-w-full text-3xl font-semibold text-indigo-600 w-[100px]">
                 <div className="w-full bg-indigo-300 rounded-full h-[100px] max-md:px-5 flex justify-center items-center overflow-hidden">

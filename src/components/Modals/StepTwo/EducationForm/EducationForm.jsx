@@ -6,8 +6,8 @@ import Button from "./Button";
 import EducationFormCard from "./EducationFormCard";
 import icon from "../../../../../src/assets/personltyTest/Vector.png";
 import plus from "../../../../../src/assets/StepTwo/plus.png";
-import { Post_Education } from "../../../../modules/steps/steptwo/service";   
-import { Delete_Education } from "../../../../modules/steps/steptwo/service";   
+import { Post_Education } from "../../../../modules/steps/steptwo/service";
+import { Delete_Education } from "../../../../modules/steps/steptwo/service";
 
 const EducationForm = ({ onSave, education }) => {
   const [college, setCollege] = useState("");
@@ -37,9 +37,9 @@ const EducationForm = ({ onSave, education }) => {
       };
 
       const response = await Post_Education(data);
-    const newEducation = { ...data, id: response.data.id };
-    
-    setEducationList([...educationList, newEducation]);
+      const newEducation = { ...data, id: response.data.id };
+
+      setEducationList([...educationList, newEducation]);
       setCollege("");
       setUniversity("");
       setSpecialization("");
@@ -61,13 +61,15 @@ const EducationForm = ({ onSave, education }) => {
     try {
       let response = await Delete_Education(id);
 
-// Update educationList state to remove the item
-setEducationList((prevList) => prevList.filter((edu) => edu.id !== id));
+      // Update educationList state to remove the item
+      setEducationList((prevList) => prevList.filter((edu) => edu.id !== id));
 
-// If education is also in the state and you want to update it
-setEducationListt((prevEducation) => prevEducation.filter((edu) => edu.id !== id));
+      // If education is also in the state and you want to update it
+      setEducationListt((prevEducation) =>
+        prevEducation.filter((edu) => edu.id !== id)
+      );
 
-      console.log(response)
+      console.log(response);
     } catch (error) {
       setDeleteError("فشل في حذف التعليم. حاول مرة أخرى");
     } finally {
@@ -94,6 +96,48 @@ setEducationListt((prevEducation) => prevEducation.filter((edu) => edu.id !== id
             />
           </div>
           <div className="overflow-y-auto max-h-[500px] w-full px-5">
+            <p
+              dir="rtl"
+              className="mt-10 font-bold leading-none max-md:max-w-full"
+            >
+              لكتابة قسم التعليم بشكل صحيح:
+            </p>
+            <ol dir="rtl" className="mt-6 list-decimal text-lg list-inside">
+              <li className="mb-3">تأكد من وضع المعلومات الصحيحة</li>
+              <li className="mb-3">
+                في البداية تضع آخر الشهادات الحاصل عليها <br /> وبالتالي اذا كنت
+                حاصل على شهادة جامعية فلا ضرورة لوجود مؤهلك في المدرسة
+              </li>
+
+              <li>
+                أين تضع المؤهل العلمي: <br />
+                <ul>
+                  <li className="mb-1">
+                    - إذا كنت تقدم على وظيفة أكاديمية يفضل وضعها بعد الهدف
+                    الوظيفي
+                    <br />
+                    لأن صاحب العمل سيركز على مؤهلاتك العلمية في هذه الحالة
+                  </li>
+                  <li className="mb-1">
+                    - إذا كانت لديك خبرة في مجال معين يفضل وضعها في آخر السيرة
+                    الذاتية، <br />
+                    لأن صاحب العمل سيلفت نظره خبرتك.
+                  </li>
+                  <li className="mb-1">
+                    {" "}
+                    - إذا كنت خريج جديد بدون خبرة يفضل وضع مؤهلك العلمي مباشرة
+                    بعد الهدف الوظيفي
+                  </li>
+                  <li className="mb-1">
+                    {" "}
+                    - إذا كنت لم تنهي دراستك الجامعية تستطيع طبعا ذكرها
+                    <br /> وذلك بوضع تواريخ من تاريخ البدء حتى تاريخ توقفك مع
+                    ذكر أهم المواد التي درستها خلال الفترة
+                  </li>
+                </ul>
+              </li>
+            </ol>
+
             <form className="flex z-0 flex-col justify-center mt-10 w-full">
               <div className="flex flex-wrap gap-8 items-start w-full text-sm text-neutral-800">
                 <InputField
@@ -184,15 +228,15 @@ setEducationListt((prevEducation) => prevEducation.filter((edu) => edu.id !== id
                     endDate: education.university_end_date,
                     isCurrentlyStudying: education.isCurrentlyStudying,
                     specialization: education.specialization,
-                    id: education.id
+                    id: education.id,
                   }}
-                  onDelete={() => handleDelete(education.id)} 
-                  deleteLoading={deletingId === education.id} 
+                  onDelete={() => handleDelete(education.id)}
+                  deleteLoading={deletingId === education.id}
                 />
               ))}
 
-               {/* Display old education */}
-               {educationListt.map((educationn, index) => (
+              {/* Display old education */}
+              {educationListt.map((educationn, index) => (
                 <EducationFormCard
                   isNewEducation
                   key={index}
@@ -203,9 +247,9 @@ setEducationListt((prevEducation) => prevEducation.filter((edu) => edu.id !== id
                     endDate: educationn.university_end_date,
                     isCurrentlyStudying: educationn.isCurrentlyStudying,
                     specialization: educationn.specialization,
-                    id: educationn.id
+                    id: educationn.id,
                   }}
-                  onDelete={() => handleDelete(educationn.id)} 
+                  onDelete={() => handleDelete(educationn.id)}
                   deleteLoading={deletingId === educationn.id}
                 />
               ))}

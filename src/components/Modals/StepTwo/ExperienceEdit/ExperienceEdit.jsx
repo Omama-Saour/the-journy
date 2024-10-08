@@ -64,16 +64,18 @@ const ExperienceEdit = ({ onSave, experiences }) => {
     setDeletingId(id);
     try {
       let response = await Delete_Experiences(id);
-console.log("id")
-console.log(id)
-console.log("id printed")
-// Update educationList state to remove the item
-setExperiencesList((prevList) => prevList.filter((edu) => edu.id !== id));
+      console.log("id");
+      console.log(id);
+      console.log("id printed");
+      // Update educationList state to remove the item
+      setExperiencesList((prevList) => prevList.filter((edu) => edu.id !== id));
 
-// If education is also in the state and you want to update it
-setExperiencesListt((prevEducation) => prevEducation.filter((edu) => edu.id !== id));
+      // If education is also in the state and you want to update it
+      setExperiencesListt((prevEducation) =>
+        prevEducation.filter((edu) => edu.id !== id)
+      );
 
-      console.log(response)
+      console.log(response);
     } catch (error) {
       setDeleteError("فشل في حذف الخبرة. حاول مرة أخرى");
     } finally {
@@ -81,7 +83,6 @@ setExperiencesListt((prevEducation) => prevEducation.filter((edu) => edu.id !== 
       setDeletingId(null);
     }
   };
-
 
   return (
     <>
@@ -102,6 +103,34 @@ setExperiencesListt((prevEducation) => prevEducation.filter((edu) => edu.id !== 
           </div>
 
           <div className="overflow-y-auto max-h-[500px] w-full px-5">
+            <p
+              dir="rtl"
+              className="mt-10 font-bold leading-none max-md:max-w-full"
+            >
+              لكتابة معلومات الخبرة بشكل صحيح:
+            </p>
+            <ol
+              dir="rtl"
+              className="mt-6 list-decimal text-lg list-inside max-md:max-w-full"
+            >
+              <li className="mb-3">
+                الخبرة تشمل الخبرات والتدريبات خلال الجامعة
+              </li>
+              <li className="mb-3">
+                صف مهامك الرئيسية وابدأ كل مهمة بأفعال قوية
+              </li>
+
+              <li className="mb-3">
+                لا تستخدم فعل واحد فقط، ودائما عند كتابة مهامك ركز على ما هو
+                مطلوب بقطاعك
+                <br />
+                وما تطلبه الشركات التي تطمح للعمل لديها وأظهره في البداية
+              </li>
+              <li className="mb-3">لا يجب أن تتجاوز الخبرات أكثر من ثمانية</li>
+              <li className="mb-3">لا تكرر الخبرات</li>
+              <li className="mb-3">انتبه على الأخطاء الإملائية </li>
+            </ol>
+
             <div className="flex z-0 flex-col mt-10 w-full max-md:max-w-full">
               <div className="flex flex-wrap gap-8 items-start w-full text-sm text-neutral-800 max-md:max-w-full">
                 <InputField
@@ -193,10 +222,11 @@ setExperiencesListt((prevEducation) => prevEducation.filter((edu) => edu.id !== 
                       ? ""
                       : experience.exper_end_date,
                     isCurrentlyWork: experience.isCurrentlyWorking,
-                    responsibiltes: experience.responsibilities[0].responsability_name,
-                    id: experience.id
+                    responsibiltes:
+                      experience.responsibilities[0].responsability_name,
+                    id: experience.id,
                   }}
-                  onDelete={() => handleDelete(experience.id)} 
+                  onDelete={() => handleDelete(experience.id)}
                   deleteLoading={deletingId === experience.id}
                 />
               ))}
@@ -213,9 +243,9 @@ setExperiencesListt((prevEducation) => prevEducation.filter((edu) => edu.id !== 
                     endDate: experiences.end_date,
                     isCurrentlyWork: experiences.isCurrentlyWork,
                     responsibiltes: experiences.company_location,
-                    id: experiences.id
+                    id: experiences.id,
                   }}
-                  onDelete={() => handleDelete(experiences.id)} 
+                  onDelete={() => handleDelete(experiences.id)}
                   deleteLoading={deletingId === experiences.id}
                 />
               ))}

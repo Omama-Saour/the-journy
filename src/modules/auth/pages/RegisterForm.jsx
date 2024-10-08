@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
-import * as Icon from "react-bootstrap-icons";
+// import * as Icon from "react-bootstrap-icons";
 import Waitting from "../../../components/Modals/Auth/Waitting";
 import Loadding from "../../../components/Modals/Auth/Loadding";
 import Success from "../../../components/Modals/Auth/Success";
 import { REGISTER } from "../service";
+import eyeOpen from "../../../assets/auth/eye-open.png";
+import eyeClose from "../../../assets/auth/eye-close.png";
+import checktrue from "../../../assets/auth/checktrue.png";
+import checkfalse from "../../../assets/auth/checkfalse.png";
 
 function RegisterForm() {
   const [passwordShown, setPasswordShown] = useState(false);
@@ -21,9 +25,18 @@ function RegisterForm() {
   const [showLoading, setShowLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [errorMessages, setErrorMessages] = useState({});
+  const [eye, setEye] = useState(true);
+
+   // Password validation states
+   const [hasNumber, setHasNumber] = useState(false);
+   const [hasMinLength, setHasMinLength] = useState(false);
+   const [hasSpecialChar, setHasSpecialChar] = useState(false);
+   const [hasUpperCase, setHasUpperCase] = useState(false);
+   const [hasLowerCase, setHasLowerCase] = useState(false);
 
   const togglePasswordVisibility = () => {
     setPasswordShown(!passwordShown);
+    setEye(!eye);
   };
 
   const isFormValid = () => {
@@ -37,9 +50,27 @@ function RegisterForm() {
     );
   };
 
-  const handle_change = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const validatePassword = (password) => {
+    setHasNumber(/\d/.test(password));
+    setHasMinLength(password.length >= 8);
+    setHasSpecialChar(/[!@#$%^&*(),.?":{}|<>]/.test(password));
+    setHasUpperCase(/[A-Z]/.test(password));
+    setHasLowerCase(/[a-z]/.test(password));
   };
+
+  const handle_change = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+    
+    // Validate password if it's the password field
+    if (name === "password") {
+      validatePassword(value);
+    }
+  };
+
+  // const handle_change = (e) => {
+  //   setForm({ ...form, [e.target.name]: e.target.value });
+  // };
 
   const handle_submit = async (e) => {
     e.preventDefault();
@@ -160,15 +191,17 @@ function RegisterForm() {
         <Form.Group controlId="formBasicPassword">
           <Form.Label className="fw-bold">تكوين كلمة المرور</Form.Label>
           <div className="position-relative">
-            <Icon.Eye
+            <img
               className="position-absolute"
-              onClick={togglePasswordVisibility}
               style={{
                 cursor: "pointer",
                 left: "10px",
                 top: "35%",
                 transform: "translateY(-50%)",
               }}
+              onClick={togglePasswordVisibility}
+              src={(eye ? eyeClose : eyeOpen) }
+              alt=""
             />
 
             <input
@@ -183,20 +216,100 @@ function RegisterForm() {
           </div>
         </Form.Group>
 
+        {/* <Row className="">
+          <Col
+            xs="6"
+            className="mb-2 d-flex align-items-center justify-content-end"
+          >
+            <span className="mr-2">رقم واحد على الأقل</span>
+            <img
+              src={checkfalse} // chek the failed and put checktrue if the condation is true 
+              alt=""
+            />
+          </Col>
+          <Col
+            xs="6"
+            className="mb-2 d-flex align-items-center justify-content-end"
+          >
+            <span className="mr-2">
+              الحد الأدنى للطول هو 8 أحرف
+            </span>
+            <img
+              src={checkfalse}
+              alt=""
+            />
+          </Col>
+          <Col
+            xs="6"
+            className="mb-2 d-flex align-items-center justify-content-end"
+          >
+            <span className="mr-2">حرف خاص واحد على الأقل</span>
+            <img
+              src={checkfalse}
+              alt=""
+            />
+          </Col>
+          <Col
+            xs="6"
+            className="mb-2 d-flex align-items-center justify-content-end"
+          >
+            <span className="mr-2">حرف واحد كبير على الأقل</span>
+            <img
+              src={checkfalse}
+              alt=""
+            />
+          </Col>
+          <Col xs="6"></Col>
+          <Col
+            xs="6"
+            className="mb-3 d-flex align-items-center justify-content-end"
+          >
+            <span className="mr-2">حرف واحد صغير على الأقل</span>
+            <img
+              src={checkfalse}
+              alt=""
+            />
+          </Col>
+        </Row> */}
+
+<Row className="">
+          <Col xs="6" className="mb-2 d-flex align-items-center justify-content-end">
+            <span className="mr-2">رقم واحد على الأقل</span>
+            <img src={hasNumber ? checktrue : checkfalse} alt="" />
+          </Col>
+          <Col xs="6" className="mb-2 d-flex align-items-center justify-content-end">
+            <span className="mr-2">الحد الأدنى للطول هو 8 أحرف</span>
+            <img src={hasMinLength ? checktrue : checkfalse} alt="" />
+          </Col>
+          <Col xs="6" className="mb-2 d-flex align-items-center justify-content-end">
+            <span className="mr-2">حرف خاص واحد على الأقل</span>
+            <img src={hasSpecialChar ? checktrue : checkfalse} alt="" />
+          </Col>
+          <Col xs="6" className="mb-2 d-flex align-items-center justify-content-end">
+            <span className="mr-2">حرف واحد كبير على الأقل</span>
+            <img src={hasUpperCase ? checktrue : checkfalse} alt="" />
+          </Col>
+          <Col xs="6"></Col>
+          <Col xs="6" className="mb-3 d-flex align-items-center justify-content-end">
+            <span className="mr-2">حرف واحد صغير على الأقل</span>
+            <img src={hasLowerCase ? checktrue : checkfalse} alt="" />
+          </Col>
+        </Row>
         <Form.Group controlId="formBasicPasswordConfirm">
           <Form.Label className="fw-bold">تأكيد كلمة المرور</Form.Label>
           <div className="position-relative">
-            <Icon.Eye
+          <img
               className="position-absolute"
-              onClick={togglePasswordVisibility}
               style={{
                 cursor: "pointer",
                 left: "10px",
                 top: "35%",
                 transform: "translateY(-50%)",
               }}
+              onClick={togglePasswordVisibility}
+              src={(eye ? eyeClose : eyeOpen) }
+              alt=""
             />
-
             <input
               className="w-full p-2 rounded-5 mb-3 text-end border focus:outline-none focus:ring-2 focus:ring-black"
               type={passwordShown ? "text" : "password"}
@@ -207,53 +320,12 @@ function RegisterForm() {
               required
             />
           </div>
-          {/* عرض رسالة الخطأ الخاصة بتأكيد كلمة المرور */}
           {errorMessages.password_confirmation && (
             <p className="text-danger">{errorMessages.password_confirmation}</p>
           )}
         </Form.Group>
 
-        <Row className="">
-          <Col
-            xs="6"
-            className="mb-2 d-flex align-items-center justify-content-end"
-          >
-            <span style={{ marginLeft: "8px" }}>رقم واحد على الأقل</span>
-            <Icon.CheckLg style={{ color: "gray" }} />
-          </Col>
-          <Col
-            xs="6"
-            className="mb-2 d-flex align-items-center justify-content-end"
-          >
-            <span style={{ marginLeft: "8px" }}>
-              الحد الأدنى للطول هو 8 أحرف
-            </span>
-            <Icon.CheckLg style={{ color: "gray" }} />
-          </Col>
-          <Col
-            xs="6"
-            className="mb-2 d-flex align-items-center justify-content-end"
-          >
-            <span style={{ marginLeft: "8px" }}>حرف خاص واحد على الأقل</span>
-            <Icon.CheckLg style={{ color: "gray" }} />
-          </Col>
-          <Col
-            xs="6"
-            className="mb-2 d-flex align-items-center justify-content-end"
-          >
-            <span style={{ marginLeft: "8px" }}>حرف واحد كبير على الأقل</span>
-            <Icon.CheckLg style={{ color: "gray" }} />
-          </Col>
-          <Col xs="6"></Col>
-          <Col
-            xs="6"
-            className="mb-3 d-flex align-items-center justify-content-end"
-          >
-            <span style={{ marginLeft: "8px" }}>حرف واحد صغير على الأقل</span>
-            <Icon.CheckLg style={{ color: "gray" }} />
-          </Col>
-        </Row>
-
+      
         <Form.Check
           reverse
           label={

@@ -80,6 +80,33 @@ setSkillsListt((prevEducation) => prevEducation.filter((edu) => edu.id !== id));
             />
           </div>
           <div className="overflow-y-auto max-h-[500px] w-full px-5">
+
+
+          <p
+              dir="rtl"
+              className="mt-10 font-bold leading-none max-md:max-w-full"
+            >
+              لكتابة المهارات بشكل صحيح:
+            </p>
+            <ol
+              dir="rtl"
+              className="mt-6 list-decimal text-lg list-inside max-md:max-w-full"
+            >
+              <li className="mb-3">
+              أن يكون لديك خبرة فيها
+              </li>
+              <li className="mb-3">
+              متعلقة مباشرة بمهنتك والوظيفة التي تريد التقديم عليها
+              </li>
+
+              <li className="mb-3">
+              مهارة ما زلت تستخدمها ومطلوبة في سوق العمل
+              
+              </li>
+              <li className="mb-3">يفضل إثراء المهارات بالتقنية </li>
+             
+            </ol>
+
             <form className="flex z-0 flex-col justify-center mt-8 w-full">
               <div className="flex flex-wrap gap-8 items-start w-full text-sm text-neutral-800">
                 <InputField

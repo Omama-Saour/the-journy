@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import closered from "../../../../assets/StepOne/closered.png";
 import upload from "../../../../assets/StepOne/file-upload.png";
 import { useNavigate } from "react-router-dom";
-import {OptionalLinkedInURL,OptionalUploadCV,SendExtractedCV} from "../../../../modules/steps/stepone/service";
+import {
+  OptionalLinkedInURL,
+  OptionalUploadCV,
+  SendExtractedCV,
+} from "../../../../modules/steps/stepone/service";
 
 const ProgressBar = () => {
   const navigate = useNavigate();
@@ -26,7 +30,7 @@ const ProgressBar = () => {
         return;
       }
       setSelectedFile(file);
-      setImageSrc(closered); 
+      setImageSrc(closered);
       console.log(file.name);
     }
   };
@@ -39,34 +43,33 @@ const ProgressBar = () => {
   const cleanDates = (data) => {
     // Check if the data is an array
     if (Array.isArray(data)) {
-        return data.map(cleanDates); // Recursively clean each item in the array
-    } else if (typeof data === 'object' && data !== null) {
-        const cleanedData = { ...data }; // Create a shallow copy of the object
+      return data.map(cleanDates); // Recursively clean each item in the array
+    } else if (typeof data === "object" && data !== null) {
+      const cleanedData = { ...data }; // Create a shallow copy of the object
 
-        // Check for specific fields and clean them
-        if (cleanedData.start_date === 'not mentioned') {
-            cleanedData.start_date = "2020-01-01";
-        }
-        if (cleanedData.end_date === 'not mentioned') {
-            cleanedData.end_date = "2020-01-01";
-        }
-        if (cleanedData.expiration_date === 'not mentioned') {
-          cleanedData.expiration_date = "2020-01-01";
+      // Check for specific fields and clean them
+      if (cleanedData.start_date === "not mentioned") {
+        cleanedData.start_date = "2020-01-01";
       }
-      if (cleanedData.issue_date === 'not mentioned') {
+      if (cleanedData.end_date === "not mentioned") {
+        cleanedData.end_date = "2020-01-01";
+      }
+      if (cleanedData.expiration_date === "not mentioned") {
+        cleanedData.expiration_date = "2020-01-01";
+      }
+      if (cleanedData.issue_date === "not mentioned") {
         cleanedData.issue_date = "2020-01-01";
-    }
+      }
 
+      // Recursively clean nested arrays or objects
+      for (const key in cleanedData) {
+        cleanedData[key] = cleanDates(cleanedData[key]);
+      }
 
-        // Recursively clean nested arrays or objects
-        for (const key in cleanedData) {
-            cleanedData[key] = cleanDates(cleanedData[key]);
-        }
-
-        return cleanedData; // Return the cleaned object
+      return cleanedData; // Return the cleaned object
     }
     return data; // Return the data as is if no condition matches
-};
+  };
 
   const handleAddStep0 = () => {
     setActiveStep(0);
@@ -96,7 +99,7 @@ const ProgressBar = () => {
 
         const sendresponse = await SendExtractedCV(cleanedData);
         console.log("sendresponse", sendresponse);
-        
+
         // const sendresponse = await SendExtractedCV(response.data);
         // console.log("sendresponse");
         // console.log(sendresponse);
@@ -170,7 +173,11 @@ const ProgressBar = () => {
             >
               رفع سيرتك الذاتية
             </label>
-            <div className="flex flex-wrap gap-10 justify-between items-center px-4 py-3 mt-1 w-full text-center bg-white border border-violet-200 border-solid min-h-[48px] rounded-[32px] max-md:max-w-full">
+
+            <button
+              onClick={() => document.getElementById("fileUpload").click()}
+              className="flex flex-wrap gap-10 justify-between items-center px-4 py-3 mt-1 w-full text-center bg-white border border-violet-200 border-solid min-h-[48px] rounded-[32px] max-md:max-w-full"
+            >
               <input
                 type="file"
                 id="fileUpload"
@@ -184,13 +191,9 @@ const ProgressBar = () => {
                 alt="Upload Icon"
                 className="object-contain shrink-0 self-stretch my-auto w-6 aspect-square"
               />
-              <button
-                onClick={() => document.getElementById("fileUpload").click()}
-                className="gap-2.5 self-stretch my-auto h-6"
-              >
-                {selectedFile ? selectedFile.name : "أرفع سيرتك الذاتية"}
-              </button>
-            </div>
+              {selectedFile ? selectedFile.name : "أرفع سيرتك الذاتية"}
+            </button>
+            {/* </div> */}
           </div>
         </div>
       )}

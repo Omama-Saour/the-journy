@@ -16,6 +16,17 @@ export const api = axios.create({
 	},
 });
 
+export const apiFile = axios.create({
+
+	baseURL:'https://journey.flaamingo.com/api',
+	headers: {
+		Authorization,
+		// 'Content-Type': 'application/json',
+		'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
+		
+	},
+});
+
 export const apidocer = axios.create({
 	timeout: 3000000,
 	baseURL:'https://dockerjourney.flaamingo.com',

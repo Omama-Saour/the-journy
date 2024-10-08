@@ -49,7 +49,7 @@ const PersonalInfo = ({
             </div>
           </div>
           <div className="flex gap-2 items-center self-end mt-3">
-            <a href={linkedinurl} target="_blank" rel="noopener noreferrer">
+            <a href={linkedinurl} target={linkedinurl} rel="noopener noreferrer">
     <img
       loading="lazy"
       src={inn}
@@ -57,7 +57,7 @@ const PersonalInfo = ({
       alt="In Icon"
     />
   </a>
-  <a href={websiteurl} target="_blank" rel="noopener noreferrer">
+  <a href={websiteurl} target={websiteurl} rel="noopener noreferrer">
     <img
       loading="lazy"
       src={word}

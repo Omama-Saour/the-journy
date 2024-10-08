@@ -71,6 +71,7 @@ const SkillsSectionSearch = ({ skillss = [] }) => {
       ) // Filter based on search term
     : skillss.filter((skill) => selectedSkills.includes(skill.skill_name)); // Show only selected skills if empty
 
+    const displayedSkills = filteredSkills.slice(0, 12); // Show only the first 8 skills
   return (
     <div className="flex flex-col justify-center mt-8 w-full max-md:max-w-full rtl">
       <h2 className="text-lg font-bold leading-snug text-right text-neutral-800 max-md:max-w-full">
@@ -110,8 +111,8 @@ const SkillsSectionSearch = ({ skillss = [] }) => {
       </div>
 
       <div className="flex flex-wrap flex-row-reverse gap-6 items-center mt-2 w-full max-md:max-w-full">
-        {filteredSkills.length > 0 ? (
-          filteredSkills.map((skill, index) => (
+        {displayedSkills.length > 0 ? (
+          displayedSkills.map((skill, index) => (
             <Skill
               key={index} // Use a unique key if available (like skill.id)
               name={skill.arabic_name} // Display the Arabic name
