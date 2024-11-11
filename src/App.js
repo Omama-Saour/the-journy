@@ -60,6 +60,9 @@ function App() {
 
         <Route element={<RequireAuth />}>
           <Route path="/" element={<LandingPage/>} />
+
+
+          {/* move pages to here */}
         </Route>
       </Routes>
     </div>

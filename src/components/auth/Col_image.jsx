@@ -1,5 +1,4 @@
-import React from 'react'
-import { Col, Image, Row } from 'react-bootstrap'
+import React from "react";
 import image2 from "../../assets/auth/Frame 14412.png";
 import image1 from "../../assets/auth/Group 7.png";
 import image3 from "../../assets/auth/Group 10.png";
@@ -9,44 +8,37 @@ import image6 from "../../assets/auth/Group 8.png";
 import image7 from "../../assets/auth/Frame 14vvv414.png";
 import image8 from "../../assets/auth/Group 9.png";
 import image9 from "../../assets/auth/Frame 1bbbb4415.png";
-function Col_image() {
+
+function ColImage() {
   return (
-    <>
-        <Col xs="6" style={{ width: "624px"}}>
-            <Row>
-              <Col>
-                <Image src={image1}style={{ position: "relative", top: "5px" }} />{" "}
-              </Col>
-              <Col>
-                <Image src={image2} style={{ position: "relative", top: "5px" }}/>{" "}
-              </Col>
-              <Col>
-                <Image src={image3}style={{ position: "relative", top: "5px" }} />{" "}
-              </Col>
-            </Row>
-              <Row>
-                <Col sm={4}>
-                  <Image src={image5} style={{ position: "relative", top: "23px" }}/>
-                </Col>
-                <Col sm={8}>
-                  <Image src={image4} style={{ position: "relative", top: "21px" }}/>
-                </Col>
-              </Row>
-            <Row>
-              <Col>
-                <Image src={image6}style={{ position: "relative", top: "46px" }} />{" "}
-              </Col>
-              <Col>
-                <Image src={image7}style={{ position: "relative", top: "-139px" }} />{" "}
-              </Col>
-              <Col>
-                <Image src={image9}style={{ position: "relative", top: "-139px" }} />{" "}
-                <Image src={image8} style={{ position: "relative", top: "-127px" }}/>{" "}
-              </Col>
-            </Row>
-          </Col>
-    </>
-  )
+    <div className="w-full max-w-[624px] mx-auto">
+      <div className="grid grid-cols-3">
+        <img src={image1} alt="" className="p-1 w-full h-auto" />
+        <img src={image2} alt="" className="p-1 w-full h-auto" />
+        <img src={image3} alt="" className="p-1 w-full h-auto" />
+      </div>
+
+      <div className="grid grid-cols-3">
+        {/* First Column */}
+        <div>
+          <img src={image5} alt="" className="p-1 w-full h-auto" />
+          <img src={image6} alt="" className="p-1 w-full h-auto" />
+        </div>
+
+        {/* Second Column */}
+        <div className="col-span-2 grid grid-rows-3">
+          <img src={image4} alt="" className="p-1 w-full h-auto col-span-2" />
+          <div className="grid grid-cols-2 row-span-2">
+            <img src={image7} alt="" className="p-1 w-full h-auto" />
+            <div className="grid grid-rows-2">
+              <img src={image9} alt="" className="p-1 w-full h-auto" />
+              <img src={image8} alt="" className="p-1 w-full h-auto" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-export default Col_image
+export default ColImage;

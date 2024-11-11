@@ -63,20 +63,7 @@ const FAQ = () => {
           أسئلة شائعة
         </h3>
       </div>
-      <div className="flex flex-wrap gap-8 mt-14 w-full max-w-[1240px] text-neutral-800 max-md:mt-10 max-md:max-w-full">
-        <div className="flex grow shrink justify-center items-start p-6 h-90 text-2xl leading-10 text-right  bg-[#d4e157] rounded-2xl min-w-[240px] w-[483px] max-md:px-5 max-md:max-w-full">
-          <div className="flex overflow-hidden flex-col justify-center items-end py-8 min-w-[240px] w-[490px]">
-            <img
-              loading="lazy"
-              src={rec}
-              alt=""
-              className="object-contain w-6 aspect-square"
-            />
-            <p className="mt-8 max-md:max-w-full">
-              {openIndex !== null ? faqItems[openIndex].answer : ''}
-            </p>
-          </div>
-        </div>
+      <div dir="rtl" className="flex flex-wrap gap-8 mt-14 w-full max-w-[1240px] text-neutral-800 max-md:mt-10 max-md:max-w-full">
         <div dir="rtl" className="flex overflow-hidden flex-col grow shrink self-end text-lg text-right font-extrabold leading-loose min-w-[240px] w-[483px] max-md:max-w-full">
           {faqItems.map((item, index) => (
             <FAQItem
@@ -87,6 +74,19 @@ const FAQ = () => {
               onClick={() => setOpenIndex(index === openIndex ? 0 : index)}
             />
           ))}
+        </div>
+        <div className="flex grow shrink justify-center items-start p-6 h-90 text-2xl leading-10 text-right  bg-[#d4e157] rounded-2xl min-w-[240px] w-[483px] max-md:px-5 max-md:max-w-full">
+          <div className="flex overflow-hidden flex-col justify-center items-end py-8 min-w-[240px] w-[490px]">
+            <img
+              loading="lazy"
+              src={rec}
+              alt=""
+              className="object-contain w-6 aspect-square"
+            />
+            <p dir="rtl" className="mt-8 max-md:max-w-full">
+              {openIndex !== null ? faqItems[openIndex].answer : ''}
+            </p>
+          </div>
         </div>
       </div>
     </section>

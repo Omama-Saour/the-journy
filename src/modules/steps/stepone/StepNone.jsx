@@ -3,6 +3,7 @@ import Header from "../../../components/StepOne/Header";
 import MainContent from "../../../components/StepOne/MainContent";
 import patternbackground from "../../../assets/loading/patternbackground.png";
 import OptionalSteps from "../../../components/Modals/StepOne/OptionalSteps/OptionalSteps";
+import OneDone from "../../../components/Modals/StepOne/OneDone";
 import arrow from "../../../assets/StepOne/arrow-left-line.png";
 import { SendSkillsAnswers, SendSkills } from "./service";
 import { getGlobalData , getSelectedValueGlobal, getskillsChosen, getadditionalSkillsForSendSkills} from "../../../components/StepOne/globals";
@@ -42,6 +43,7 @@ const StepNone = () => {
     setIsOptionalSteps(true); 
   };
 
+  // no state
   const sendApi = async () => {
     setLoading(true); 
     setErrorMessage("");// Clear previous error
@@ -162,6 +164,8 @@ const StepNone = () => {
       </div>
 
       {isOptionalSteps && <OptionalSteps onSave={handleEditClick} />}
+
+      {<OneDone/>}
 
       {showNoSuggested && (
         <NoSuggested

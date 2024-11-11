@@ -14,11 +14,12 @@ const Feature = ({ icon, description }) => (
       alt=""
       className="object-contain w-10 aspect-square"
     />
-    <div className="mt-3">{description}</div>
+    <div dir="rtl" className="mt-3">{description}</div>
   </div>
 );
 
 const Features = () => {
+  const isMobile = window.innerWidth <= 768;
   const features = [
     {
       icon: S1,
@@ -59,7 +60,18 @@ const Features = () => {
         </h3>
       </div>
       <div className="flex relative z-0 items-center mt-14 w-full max-md:mt-10 max-md:max-w-full">
-        <div className="flex absolute inset-x-0 top-2/4 z-0 justify-between items-start -translate-y-2/4 min-w-[240px] translate-x-[0%] w-[1240px] max-md:max-w-full">
+      {
+        isMobile ? (
+          <>
+           <div className="flex absolute inset-x-0 z-0 shrink-0 h-px bg-indigo-300 bottom-[195px] min-w-[240px] top-[160px] w-[1240px] max-md:max-w-full" />
+           <div className="flex absolute inset-x-0 z-0 shrink-0 h-px bg-indigo-300 bottom-[195px] min-w-[240px] top-[320px] w-[1240px] max-md:max-w-full" />
+           <div className="flex absolute inset-x-0 z-0 shrink-0 h-px bg-indigo-300 bottom-[195px] min-w-[240px] top-[480px] w-[1240px] max-md:max-w-full" />
+           <div className="flex absolute inset-x-0 z-0 shrink-0 h-px bg-indigo-300 bottom-[195px] min-w-[240px] top-[640px] w-[1240px] max-md:max-w-full" />
+           <div className="flex absolute inset-x-0 z-0 shrink-0 h-px bg-indigo-300 bottom-[195px] min-w-[240px] top-[800px] w-[1240px] max-md:max-w-full" />
+  </>
+        ) :
+        (
+          <div className="flex absolute inset-x-0 top-2/4 z-0 justify-between items-start -translate-y-2/4 min-w-[240px] translate-x-[0%] w-[1240px] max-md:max-w-full">
           <div className="flex absolute inset-x-0 z-0 shrink-0 h-px bg-indigo-300 bottom-[195px] min-w-[240px] top-[196px] w-[1240px] max-md:max-w-full" />
           <div className="flex z-0 shrink-0 w-px bg-indigo-300 h-[392px]" />
           <div className="flex z-0 shrink-0 w-px bg-indigo-300 h-[392px]" />
@@ -69,6 +81,8 @@ const Features = () => {
           <div className="flex z-0 shrink-0 w-px bg-indigo-300 h-[392px]" />
           <div className="flex absolute z-0 shrink-0 w-px h-4 bg-indigo-600 left-[413px] top-[89px]" />
         </div>
+        )
+      }
         <div className="flex overflow-hidden z-0 flex-wrap flex-1 shrink gap-0.5 items-start text-lg font-bold text-right basis-0 min-w-[240px] text-neutral-800 max-md:max-w-full">
           {features.map((feature, index) => (
             <Feature

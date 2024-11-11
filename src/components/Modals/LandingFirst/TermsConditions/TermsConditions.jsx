@@ -3,11 +3,16 @@ import icon from "../../../../../src/assets/personltyTest/Vector.png";
 import "./scrollbar.css";
 
 const TermsConditions = ({ onSave }) => {
+  
+  const isMobile = window.innerWidth <= 768;
+
   return (
     <>
       <div className="fixed inset-0 bg-black opacity-50 z-40"></div>
       <section className="fixed bottom-0 left-0 right-0 top-0 flex flex-col justify-center items-center px-5 py-4 z-50">
-        <main className="flex relative flex-col justify-center bg-white rounded-3xl min-w-[300px] max-w-[700px] pt-20 pb-8 overflow-hidden max-md:px-5 max-md:py-24">
+      
+      <main className={`flex relative flex-col justify-center bg-white rounded-3xl min-w-[300px] max-w-[700px] pt-20 pb-8 overflow-hidden ${isMobile ? 'px-2 py-6' : 'max-md:px-5 max-md:py-24'}`}>
+        {/* <main className="flex relative flex-col justify-center bg-white rounded-3xl min-w-[300px] max-w-[700px] pt-20 pb-8 overflow-hidden max-md:px-5 max-md:py-24"> */}
           <h1 className="flex z-0 flex-col w-full text-3xl font-bold leading-none text-center text-neutral-800 max-md:max-w-full">
             الشروط والأحكام
           </h1>

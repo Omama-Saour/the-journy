@@ -1,10 +1,11 @@
-import { Button, Image } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import journyImage from "../../assets/journy.png";
 import { useNavigate } from "react-router-dom";
 function NavLogin() {
-  const navigate=useNavigate()
+  const navigate=useNavigate();
+  const isMobile = window.innerWidth <= 768;
   return (
     <Navbar className="bg-white">
       <Container>
@@ -21,11 +22,20 @@ function NavLogin() {
           >
              انشاء حساب
           </Button>
-          <span className=" ms-4">لا تمتلك حساب لدينا؟</span>
+         { isMobile ?  
+         null
+          :
+          <span className=" ms-4">لا تمتلك حساب لدينا؟</span> }
         </Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
-          <Image src={journyImage} alt="..." />
+          {/* <Image src={journyImage} alt="..." /> */}
+          <img
+         loading="lazy"
+         src={journyImage}
+         alt="Company logo"
+         className="object-contain shrink-0 self-stretch my-auto aspect-[2.85] w-[140px]"
+       />
         </Navbar.Collapse>
       </Container>
     </Navbar>

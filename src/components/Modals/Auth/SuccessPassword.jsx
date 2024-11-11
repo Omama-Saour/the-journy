@@ -1,43 +1,34 @@
-// import { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import * as Icon from "react-bootstrap-icons";
-import {useNavigate } from "react-router-dom";
-// import { replace, useNavigate } from "react-router-dom";
+import React from "react";
+import check from "../../../assets/auth/Done_24.png";
+import { useNavigate } from "react-router-dom";
 
+const SuccessPassword = ({ show }) => {
+  const navigate = useNavigate();
+  const isMobile = window.innerWidth <= 768;
+  if (!show) return null;
 
-function SuccessPassword({ show }) {
-    const navigate=useNavigate()
-    return (
-      <Modal show={show} onHide={() => {}} centered>
-               <Modal.Body
-            className="text-center bg-white rounded-4"
-            style={{
-              padding: "80px ",
-              width: "800px",
-              marginLeft: "-28%",
-              height: "450px",
-            }}
+  return (
+    <>
+      <div className="fixed inset-0 bg-black opacity-50 z-40"></div>
+      <div className="fixed inset-0 flex items-center justify-center z-50 m-4">
+        <div
+          dir="rtl"
+          className="bg-white rounded-3xl shadow-lg pt-20 pb-20 mx-auto text-center max-md:min max-md:max-w-full"
+        >
+          <img loading="lazy" src={check} alt="" className="mx-auto mb-4 mt-6" />
+          <h2 dir="rtl" className={`mt-8 ${isMobile ? '' : 'ml-40 mr-40'} text-3xl font-bold`}>
+          لقد قمت بتعيين كلمة مرور جديد بنجاح!
+          </h2>
+          <button
+            onClick={() => navigate('/login', { replace: true })}
+            className={`border-0 rounded-5 mb-6 ${isMobile ? 'pl-10 pr-10 mt-8' : 'pl-10 pr-10 mt-2'} pb-3 pt-3 text-lg bg-black text-white`}
           >
-            <Icon.CheckAll style={{ fontSize: "64px",marginLeft:'44%'}} />
-            <p
-              className=" mt-5 mb-5"
-              style={{ fontSize: "36px", fontWeight: "bold" }}
-            >
-              {" "}
-              لقد قمت بتعيين كلمة مرور بنجاح
-            </p>
-            <Button
-              onClick={() =>navigate('/login',{replace:true}) }
-              className="border-0 rounded-5 w-25 mt-3 p-2 fs-5 bg-black"
-              // style={{ backgroundColor: "#BDBFC4" }}
-            >
-               تسجيل الدخول
-            </Button>
-          </Modal.Body>
-      </Modal>
-    );
-  }
-  
-  export default SuccessPassword;
-  
+            تسجيل دخول
+          </button>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default SuccessPassword;

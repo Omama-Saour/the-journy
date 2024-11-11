@@ -9,8 +9,10 @@ import Steps from "../../components/Loading/Steps";
 import Pricing from "../../components/Loading/Pricing";
 import FAQ from "../../components/Loading/FAQ";
 import CookieConsent from "../../components/Modals/LandingFirst/CookieConsent/CookieConsent"
+import Founder from "../../components/Loading/Founder";
 
 const HomePage = () => {
+  const isMobile = window.innerWidth <= 768;
   return (
     <Layout>
       <CookieConsent/>
@@ -19,8 +21,19 @@ const HomePage = () => {
       <AboutUs />
       <CandidateProfile />
       <ExpertAdvice />
-      <Steps />
-      <Pricing />
+      {
+        isMobile ? 
+      <>
+       <Pricing />
+       <Steps /> 
+      </>
+        :
+      <>
+        <Steps /> 
+        <Pricing />
+      </>
+      }
+      <Founder/>
       <FAQ />
     </Layout>
   );

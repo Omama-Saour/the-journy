@@ -25,36 +25,42 @@ function ChangePasswordForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (recaptchaValue) {
-      console.log("تم التحقق من reCAPTCHA:", recaptchaValue);
-
-      // Add timeout handling
-      try {
-        // Simulate an API call here for password reset
-        await new Promise((resolve, reject) => {
-          setTimeout(() => {
-            // Simulate success or failure
-            Math.random() > 0.5 ? resolve() : reject(new Error("Timeout occurred"));
-          }, 3000); // Adjust timeout as necessary
-        });
-
-        // Navigate to the reset password page after successful verification
-        navigate("/rechange-password");
-      } catch (err) {
-        setError("حدث خطأ أثناء عملية إعادة تعيين كلمة المرور. الرجاء المحاولة لاحقًا.");
-        console.error("Error:", err);
-      }
-    } else {
-      console.log("الرجاء التحقق من reCAPTCHA");
+    if (!recaptchaValue) {
       setError("الرجاء التحقق من reCAPTCHA");
+      return;
+    }
+
+    console.log("تم التحقق من reCAPTCHA:", recaptchaValue);
+
+    try {
+      // Simulate an API call for password reset
+      await new Promise((resolve, reject) => {
+        setTimeout(() => {
+          // Simulate a 401 error based on some condition
+          // Replace this with your actual API call
+          const isSuccess = Math.random() > 0.5; // Simulate success or failure
+          isSuccess ? resolve() : reject({ response: { status: 401 } });
+        }, 3000); // Adjust timeout as necessary
+      });
+
+      // Navigate to the reset password page after successful verification
+      // navigate("/rechange-password");
+      navigate("/rechange-password", { state: { email } });
+    } catch (err) {
+      if (err.response && err.response.status === 401) {
+        setError("حدث خطأ: لم يتم التحقق من reCAPTCHA. الرجاء المحاولة مرة أخرى.");
+      } else {
+        setError("حدث خطأ أثناء عملية إعادة تعيين كلمة المرور. الرجاء المحاولة لاحقًا.");
+      }
+      console.error("Error:", err);
     }
   };
 
   return (
     <>
       <div className="text-center mb-5">
-        <h2 className="fw-bold">هل نسيت كلمة المرور؟</h2>
-        <h6>
+        <h2 className="text-4xl font-bold leading-28">هل نسيت كلمة المرور؟</h2>
+        <h6 className="leading-6 mt-4">
           لا داعي للقلق, سنرسل لك رسالة لمساعدتك في اعادة تعيين كلمة المرور الخاصة بك
         </h6>
       </div>
@@ -71,11 +77,17 @@ function ChangePasswordForm() {
           />
         </Form.Group>
 
-        <ReCAPTCHA
+        {/* <ReCAPTCHA
           sitekey="6LdNR0sqAAAAACSzgkwnD3eyR2OfhsPA06xCFU1E"
           onChange={handleRecaptchaChange}
           className="w-full mb-3"
-          required
+        /> */}
+
+<ReCAPTCHA
+          sitekey="6LdNR0sqAAAAACSzgkwnD3eyR2OfhsPA06xCFU1E"
+          onChange={handleRecaptchaChange}
+          className="w-full mb-3"
+          // required
         />
 
         {error && <p className="text-red-500 text-center">{error}</p>}
@@ -84,7 +96,7 @@ function ChangePasswordForm() {
           style={{ backgroundColor: isFormValid() ? "black" : "#BDBFC4" }}
           className={`border-0 rounded-5 w-100 mt-3 p-2 fs-5 `}
           type="submit"
-          disabled={!isFormValid()} // الزر معطل إذا كانت الحقول غير صالحة
+          disabled={!isFormValid()}
         >
           ارسال رابط اعادة الضبط
         </Button>

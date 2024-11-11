@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
-import * as Icon from "react-bootstrap-icons";
 import SuccessPassword from "../../../components/Modals/Auth/SuccessPassword";
 import { RESET_PASSWORD } from "../service";
+import eyeOpen from "../../../assets/auth/eye-open.png";
+import eyeClose from "../../../assets/auth/eye-close.png";
+import checktrue from "../../../assets/auth/checktrue.png";
+import checkfalse from "../../../assets/auth/checkfalse.png";
 
 function ReChangePasswordForm() {
-  const [passwordShown, setPasswordShown] = useState(false);
+  const isMobile = window.innerWidth <= 768;
+
   const [showSuccess, setShowSuccess] = useState(false);
   const [errorMessages, setErrorMessages] = useState({});
   const [form, setForm] = useState({
@@ -14,18 +18,51 @@ function ReChangePasswordForm() {
     newPassword: "",
     password: "",
   });
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false);
+
+  const [passwordShown, setPasswordShown] = useState(false);
+  const [eye, setEye] = useState(true);
+
+  const [passwordShownConfirm, setPasswordShownConfirm] = useState(false);
+  const [eyeConfirm, setEyeConfirm] = useState(true);
 
   const isFormValid = () => {
     return form.password && form.newPassword && form.newPassword_confirmation;
   };
 
   const handle_change = (e) => {
+    const { name, value } = e.target;
     setForm({ ...form, [e.target.name]: e.target.value });
+
+    // Validate password if it's the password field
+    if (name === "password") {
+      validatePassword(value);
+    }
   };
+
+  // Password validation states
+  const [hasNumber, setHasNumber] = useState(false);
+  const [hasMinLength, setHasMinLength] = useState(false);
+  const [hasSpecialChar, setHasSpecialChar] = useState(false);
+  const [hasUpperCase, setHasUpperCase] = useState(false);
+  const [hasLowerCase, setHasLowerCase] = useState(false);
 
   const togglePasswordVisibility = () => {
     setPasswordShown(!passwordShown);
+    setEye(!eye);
+  };
+
+  const togglePasswordVisibilityConfirm = () => {
+    setPasswordShownConfirm(!passwordShownConfirm);
+    setEyeConfirm(!eyeConfirm);
+  };
+
+  const validatePassword = (password) => {
+    setHasNumber(/\d/.test(password));
+    setHasMinLength(password.length >= 8);
+    setHasSpecialChar(/[!@#$%^&*(),.?":{}|<>]/.test(password));
+    setHasUpperCase(/[A-Z]/.test(password));
+    setHasLowerCase(/[a-z]/.test(password));
   };
 
   const handle_submit = async (e) => {
@@ -58,30 +95,41 @@ function ReChangePasswordForm() {
       }));
       setShowSuccess(false);
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
   return (
     <>
       <div className="text-center mb-5">
-        <h2 className="fw-bold">اعادة تعيين كلمة المرور</h2>
-        <h6>أنت على بعد دقيقتين لبدأ رحلتك</h6>
+        {
+          isMobile ? 
+          <h2 className="text-4xl font-bold" style={{ lineHeight: '3rem' }}>إعادة تعيين كلمة المرور</h2> 
+          :
+          <h2 className="fw-bold">إعادة تعيين كلمة المرور</h2>
+        }
+       
+        <h6 dir="rtl">
+          لا داعي للقلق، سنرسل لك رسالة لمساعدتك في إعادة تعيين كلمة المرور
+          الخاصة بك.
+        </h6>
       </div>
       <Form className="text-end" onSubmit={handle_submit}>
         {/* Password Field */}
         <Form.Group controlId="formBasicPassword">
           <Form.Label className="fw-bold">تكوين كلمة المرور</Form.Label>
           <div className="position-relative">
-            <Icon.Eye
+            <img
               className="position-absolute"
-              onClick={togglePasswordVisibility}
               style={{
                 cursor: "pointer",
                 left: "10px",
                 top: "35%",
                 transform: "translateY(-50%)",
               }}
+              onClick={togglePasswordVisibility}
+              src={eye ? eyeClose : eyeOpen}
+              alt=""
             />
             <input
               className="w-full p-2 rounded-5 mb-3 text-end border focus:outline-none focus:ring-2 focus:ring-black"
@@ -94,92 +142,88 @@ function ReChangePasswordForm() {
           </div>
         </Form.Group>
 
-        <Row>
-          <Col
-            xs="6"
-            className="mb-2 d-flex align-items-center justify-content-end"
-          >
-            <span style={{ marginLeft: "8px" }}>رقم واحد على الأقل</span>
-            <Icon.CheckLg style={{ color: "gray" }} />
+        {isMobile ? (
+          <Col className="">
+            <Col className="mb-2 d-flex align-items-center justify-content-end">
+              <span className="mr-2">رقم واحد على الأقل</span>
+              <img src={hasNumber ? checktrue : checkfalse} alt="" />
+            </Col>
+            <Col className="mb-2 d-flex align-items-center justify-content-end">
+              <span className="mr-2">الحد الأدنى للطول هو 8 أحرف</span>
+              <img src={hasMinLength ? checktrue : checkfalse} alt="" />
+            </Col>
+            <Col className="mb-2 d-flex align-items-center justify-content-end">
+              <span className="mr-2">حرف خاص واحد على الأقل</span>
+              <img src={hasSpecialChar ? checktrue : checkfalse} alt="" />
+            </Col>
+            <Col className="mb-2 d-flex align-items-center justify-content-end">
+              <span className="mr-2">حرف واحد كبير على الأقل</span>
+              <img src={hasUpperCase ? checktrue : checkfalse} alt="" />
+            </Col>
+            <Col className="mb-3 d-flex align-items-center justify-content-end">
+              <span className="mr-2">حرف واحد صغير على الأقل</span>
+              <img src={hasLowerCase ? checktrue : checkfalse} alt="" />
+            </Col>
           </Col>
-          <Col
-            xs="6"
-            className="mb-2 d-flex align-items-center justify-content-end"
-          >
-            <span style={{ marginLeft: "8px" }}>
-              الحد الأدنى للطول هو 8 أحرف
-            </span>
-            <Icon.CheckLg style={{ color: "gray" }} />
-          </Col>
-          <Col
-            xs="6"
-            className="mb-2 d-flex align-items-center justify-content-end"
-          >
-            <span style={{ marginLeft: "8px" }}>حرف خاص واحد على الأقل</span>
-            <Icon.CheckLg style={{ color: "gray" }} />
-          </Col>
-          <Col
-            xs="6"
-            className="mb-2 d-flex align-items-center justify-content-end"
-          >
-            <span style={{ marginLeft: "8px" }}>حرف واحد كبير على الأقل</span>
-            <Icon.CheckLg style={{ color: "gray" }} />
-          </Col>
-          <Col xs="6"></Col>
-          <Col
-            xs="6"
-            className="mb-3 d-flex align-items-center justify-content-end"
-          >
-            <span style={{ marginLeft: "8px" }}>حرف واحد صغير على الأقل</span>
-            <Icon.CheckLg style={{ color: "gray" }} />
-          </Col>
-        </Row>
+        ) : (
+          <Row className="">
+            <Col
+              xs="6"
+              className="mb-2 d-flex align-items-center justify-content-end"
+            >
+              <span className="mr-2">رقم واحد على الأقل</span>
+              <img src={hasNumber ? checktrue : checkfalse} alt="" />
+            </Col>
+            <Col
+              xs="6"
+              className="mb-2 d-flex align-items-center justify-content-end"
+            >
+              <span className="mr-2">الحد الأدنى للطول هو 8 أحرف</span>
+              <img src={hasMinLength ? checktrue : checkfalse} alt="" />
+            </Col>
+            <Col
+              xs="6"
+              className="mb-2 d-flex align-items-center justify-content-end"
+            >
+              <span className="mr-2">حرف خاص واحد على الأقل</span>
+              <img src={hasSpecialChar ? checktrue : checkfalse} alt="" />
+            </Col>
+            <Col
+              xs="6"
+              className="mb-2 d-flex align-items-center justify-content-end"
+            >
+              <span className="mr-2">حرف واحد كبير على الأقل</span>
+              <img src={hasUpperCase ? checktrue : checkfalse} alt="" />
+            </Col>
+            <Col xs="6"></Col>
+            <Col
+              xs="6"
+              className="mb-3 d-flex align-items-center justify-content-end"
+            >
+              <span className="mr-2">حرف واحد صغير على الأقل</span>
+              <img src={hasLowerCase ? checktrue : checkfalse} alt="" />
+            </Col>
+          </Row>
+        )}
 
-        {/* New Password Field */}
-        <Form.Group controlId="formBasicNewPassword">
-          <Form.Label className="fw-bold">كلمة المرور الجديدة</Form.Label>
-          <div className="position-relative">
-            <Icon.Eye
-              className="position-absolute"
-              onClick={togglePasswordVisibility}
-              style={{
-                cursor: "pointer",
-                left: "10px",
-                top: "35%",
-                transform: "translateY(-50%)",
-              }}
-            />
-            <input
-              className="w-full p-2 rounded-5 mb-3 text-end border focus:outline-none focus:ring-2 focus:ring-black"
-              type={passwordShown ? "text" : "password"}
-              placeholder="كلمة المرور الجديدة"
-              name="newPassword"
-              required
-              onChange={handle_change}
-            />
-          </div>
-          {errorMessages.newPassword && (
-            <p className="text-danger">{errorMessages.newPassword}</p>
-          )}
-        </Form.Group>
-
-        {/* Confirm Password Field */}
         <Form.Group controlId="formBasicConfirmPassword">
           <Form.Label className="fw-bold">تأكيد كلمة المرور</Form.Label>
           <div className="position-relative">
-            <Icon.Eye
+            <img
               className="position-absolute"
-              onClick={togglePasswordVisibility}
               style={{
                 cursor: "pointer",
                 left: "10px",
                 top: "35%",
                 transform: "translateY(-50%)",
               }}
+              onClick={togglePasswordVisibilityConfirm}
+              src={eyeConfirm ? eyeClose : eyeOpen}
+              alt=""
             />
             <input
               className="w-full p-2 rounded-5 mb-3 text-end border focus:outline-none focus:ring-2 focus:ring-black"
-              type={passwordShown ? "text" : "password"}
+              type={passwordShownConfirm ? "text" : "password"}
               placeholder="تأكيد كلمة المرور"
               name="newPassword_confirmation"
               required
@@ -198,11 +242,16 @@ function ReChangePasswordForm() {
           <p className="text-danger">{errorMessages.general}</p>
         )}
 
+<div className="mt-5">
+        
+        <Form.Check reverse label="بالنقر هنا، فإنك توافق على شروط وأحكام الرحلة وسياسة الخصوصية" />
+      </div>
+
         <Button
           style={{ backgroundColor: isFormValid() ? "black" : "#BDBFC4" }}
           className={`border-0 rounded-5 w-100 mt-3 p-2 fs-5`}
           type="submit"
-          disabled={!isFormValid() || loading} // Disable button during loading
+          disabled={!isFormValid() || loading}
         >
           {loading ? (
             <span
@@ -214,8 +263,8 @@ function ReChangePasswordForm() {
             "إعادة تعيين كلمة المرور"
           )}
         </Button>
-      </Form>
 
+      </Form>
       <SuccessPassword show={showSuccess} />
     </>
   );

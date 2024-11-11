@@ -90,17 +90,17 @@ const RecordingComponent = ({ questions }) => {
       setError(""); // Reset error state
       const formData = new FormData();
       formData.append("question_id", currentQuestion.id);
-      formData.append("video_file", recordedChunks[0]);
+      // formData.append("video_file", recordedChunks[0]);
 
     // Ensure recordedChunks[0] exists before creating the File
-    // const blob = recordedChunks[0];
-    // var videoFile =null ;
-    // if (blob) {
-    //  videoFile = new File([blob], `video_${currentQuestionIndex + 1}.mp4`, {
-    //     type: 'video/mp4',
-    //   }); }
-    //   formData.append("video_file", videoFile);
-
+    const blob = recordedChunks[0];
+    var videoFile =null ;
+    if (blob) {
+     videoFile = new File([blob], `video_${currentQuestionIndex + 1}.mp4`, {
+        type: 'video/mp4',
+      }); }
+      formData.append("video_file", videoFile);
+console.log(videoFile)
       try {
         await Send_questionAnswer(formData);
         // Move to the next question

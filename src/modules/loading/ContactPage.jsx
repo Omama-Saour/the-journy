@@ -36,9 +36,9 @@ const ContactPage = () => {
             />
           </div>
         </div>
-        <div className="flex flex-wrap gap-10 items-center self-center mt-6 max-md:mt-10 max-md:max-w-full">
-          <ThankYouCard />
+        <div dir="rtl" className="flex flex-wrap gap-10 items-center self-center mt-6 max-md:mt-10 max-md:max-w-full">
           <ContactForm />
+          <ThankYouCard />
         </div>
       </section>
     </main>

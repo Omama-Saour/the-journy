@@ -12,7 +12,8 @@ import checktrue from "../../../assets/auth/checktrue.png";
 import checkfalse from "../../../assets/auth/checkfalse.png";
 
 function RegisterForm() {
-  const [passwordShown, setPasswordShown] = useState(false);
+  const isMobile = window.innerWidth <= 768;
+
   const [form, setForm] = useState({
     first_name: "",
     last_name: "",
@@ -25,18 +26,27 @@ function RegisterForm() {
   const [showLoading, setShowLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [errorMessages, setErrorMessages] = useState({});
+  const [passwordShown, setPasswordShown] = useState(false);
   const [eye, setEye] = useState(true);
 
-   // Password validation states
-   const [hasNumber, setHasNumber] = useState(false);
-   const [hasMinLength, setHasMinLength] = useState(false);
-   const [hasSpecialChar, setHasSpecialChar] = useState(false);
-   const [hasUpperCase, setHasUpperCase] = useState(false);
-   const [hasLowerCase, setHasLowerCase] = useState(false);
+  const [passwordShownConfirm, setPasswordShownConfirm] = useState(false);
+  const [eyeConfirm, setEyeConfirm] = useState(true);
+
+  // Password validation states
+  const [hasNumber, setHasNumber] = useState(false);
+  const [hasMinLength, setHasMinLength] = useState(false);
+  const [hasSpecialChar, setHasSpecialChar] = useState(false);
+  const [hasUpperCase, setHasUpperCase] = useState(false);
+  const [hasLowerCase, setHasLowerCase] = useState(false);
 
   const togglePasswordVisibility = () => {
     setPasswordShown(!passwordShown);
     setEye(!eye);
+  };
+
+  const togglePasswordVisibilityConfirm = () => {
+    setPasswordShownConfirm(!passwordShownConfirm);
+    setEyeConfirm(!eyeConfirm);
   };
 
   const isFormValid = () => {
@@ -61,7 +71,7 @@ function RegisterForm() {
   const handle_change = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
-    
+
     // Validate password if it's the password field
     if (name === "password") {
       validatePassword(value);
@@ -122,7 +132,12 @@ function RegisterForm() {
         <h2 className="fw-bold">إنشاء حساب</h2>
         <h6>أنت على بعد دقيقتين لبدأ رحلتك</h6>
       </div>
-      <Form className="text-end" onSubmit={handle_submit}>
+      <Form
+        className={`${isMobile ? "pl-14 pr-14" : ""} text-end`}
+        onSubmit={handle_submit}
+      >
+        {" "}
+        {/* p-14 for mobile */}
         <div className="d-flex justify-content-between">
           <Form.Group controlId="formBasicFirstName" style={{ width: "320px" }}>
             <Form.Label className="fw-bold">الأسم الأخير</Form.Label>
@@ -139,7 +154,7 @@ function RegisterForm() {
           </Form.Group>
 
           <Form.Group controlId="formBasicLastName" style={{ width: "320px" }}>
-            <Form.Label className="fw-bold">الاسم الأول</Form.Label>
+            <Form.Label className="fw-bold">الأسم الأول</Form.Label>
 
             <input
               className="w-full p-2 rounded-5 mb-3 ml-2 text-end border focus:outline-none focus:ring-2 focus:ring-black"
@@ -152,7 +167,6 @@ function RegisterForm() {
             />
           </Form.Group>
         </div>
-
         <Form.Group controlId="formBasicEmail">
           <Form.Label className="fw-bold">البريد الإلكتروني</Form.Label>
           <input
@@ -169,7 +183,6 @@ function RegisterForm() {
             <p className="text-danger">{errorMessages.email}</p>
           )}
         </Form.Group>
-
         <Form.Group controlId="formBasicMobile">
           <Form.Label className="fw-bold">رقم الجوال</Form.Label>
 
@@ -187,7 +200,6 @@ function RegisterForm() {
             <p className="text-danger">{errorMessages.phone}</p>
           )}
         </Form.Group>
-
         <Form.Group controlId="formBasicPassword">
           <Form.Label className="fw-bold">تكوين كلمة المرور</Form.Label>
           <div className="position-relative">
@@ -200,7 +212,7 @@ function RegisterForm() {
                 transform: "translateY(-50%)",
               }}
               onClick={togglePasswordVisibility}
-              src={(eye ? eyeClose : eyeOpen) }
+              src={eye ? eyeClose : eyeOpen}
               alt=""
             />
 
@@ -216,89 +228,86 @@ function RegisterForm() {
           </div>
         </Form.Group>
 
-        {/* <Row className="">
+        {
+          isMobile ? 
+          <Col className="">
           <Col
-            xs="6"
+           
             className="mb-2 d-flex align-items-center justify-content-end"
           >
-            <span className="mr-2">رقم واحد على الأقل</span>
-            <img
-              src={checkfalse} // chek the failed and put checktrue if the condation is true 
-              alt=""
-            />
-          </Col>
-          <Col
-            xs="6"
-            className="mb-2 d-flex align-items-center justify-content-end"
-          >
-            <span className="mr-2">
-              الحد الأدنى للطول هو 8 أحرف
-            </span>
-            <img
-              src={checkfalse}
-              alt=""
-            />
-          </Col>
-          <Col
-            xs="6"
-            className="mb-2 d-flex align-items-center justify-content-end"
-          >
-            <span className="mr-2">حرف خاص واحد على الأقل</span>
-            <img
-              src={checkfalse}
-              alt=""
-            />
-          </Col>
-          <Col
-            xs="6"
-            className="mb-2 d-flex align-items-center justify-content-end"
-          >
-            <span className="mr-2">حرف واحد كبير على الأقل</span>
-            <img
-              src={checkfalse}
-              alt=""
-            />
-          </Col>
-          <Col xs="6"></Col>
-          <Col
-            xs="6"
-            className="mb-3 d-flex align-items-center justify-content-end"
-          >
-            <span className="mr-2">حرف واحد صغير على الأقل</span>
-            <img
-              src={checkfalse}
-              alt=""
-            />
-          </Col>
-        </Row> */}
-
-<Row className="">
-          <Col xs="6" className="mb-2 d-flex align-items-center justify-content-end">
             <span className="mr-2">رقم واحد على الأقل</span>
             <img src={hasNumber ? checktrue : checkfalse} alt="" />
           </Col>
-          <Col xs="6" className="mb-2 d-flex align-items-center justify-content-end">
+          <Col
+          
+            className="mb-2 d-flex align-items-center justify-content-end"
+          >
             <span className="mr-2">الحد الأدنى للطول هو 8 أحرف</span>
             <img src={hasMinLength ? checktrue : checkfalse} alt="" />
           </Col>
-          <Col xs="6" className="mb-2 d-flex align-items-center justify-content-end">
+          <Col
+            className="mb-2 d-flex align-items-center justify-content-end"
+          >
             <span className="mr-2">حرف خاص واحد على الأقل</span>
             <img src={hasSpecialChar ? checktrue : checkfalse} alt="" />
           </Col>
-          <Col xs="6" className="mb-2 d-flex align-items-center justify-content-end">
+          <Col
+            className="mb-2 d-flex align-items-center justify-content-end"
+          >
             <span className="mr-2">حرف واحد كبير على الأقل</span>
             <img src={hasUpperCase ? checktrue : checkfalse} alt="" />
           </Col>
-          <Col xs="6"></Col>
-          <Col xs="6" className="mb-3 d-flex align-items-center justify-content-end">
+          <Col
+            className="mb-3 d-flex align-items-center justify-content-end"
+          >
             <span className="mr-2">حرف واحد صغير على الأقل</span>
             <img src={hasLowerCase ? checktrue : checkfalse} alt="" />
           </Col>
-        </Row>
-        <Form.Group controlId="formBasicPasswordConfirm">
+        </Col> : 
+    <Row className="">
+    <Col
+      xs="6"
+      className="mb-2 d-flex align-items-center justify-content-end"
+    >
+      <span className="mr-2">رقم واحد على الأقل</span>
+      <img src={hasNumber ? checktrue : checkfalse} alt="" />
+    </Col>
+    <Col
+      xs="6"
+      className="mb-2 d-flex align-items-center justify-content-end"
+    >
+      <span className="mr-2">الحد الأدنى للطول هو 8 أحرف</span>
+      <img src={hasMinLength ? checktrue : checkfalse} alt="" />
+    </Col>
+    <Col
+      xs="6"
+      className="mb-2 d-flex align-items-center justify-content-end"
+    >
+      <span className="mr-2">حرف خاص واحد على الأقل</span>
+      <img src={hasSpecialChar ? checktrue : checkfalse} alt="" />
+    </Col>
+    <Col
+      xs="6"
+      className="mb-2 d-flex align-items-center justify-content-end"
+    >
+      <span className="mr-2">حرف واحد كبير على الأقل</span>
+      <img src={hasUpperCase ? checktrue : checkfalse} alt="" />
+    </Col>
+    <Col xs="6"></Col>
+    <Col
+      xs="6"
+      className="mb-3 d-flex align-items-center justify-content-end"
+    >
+      <span className="mr-2">حرف واحد صغير على الأقل</span>
+      <img src={hasLowerCase ? checktrue : checkfalse} alt="" />
+    </Col>
+  </Row>
+        }
+    
+        {/* <Form.Group controlId="formBasicPasswordConfirm">
           <Form.Label className="fw-bold">تأكيد كلمة المرور</Form.Label>
           <div className="position-relative">
-          <img
+            <img
               className="position-absolute"
               style={{
                 cursor: "pointer",
@@ -306,13 +315,13 @@ function RegisterForm() {
                 top: "35%",
                 transform: "translateY(-50%)",
               }}
-              onClick={togglePasswordVisibility}
-              src={(eye ? eyeClose : eyeOpen) }
+              onClick={togglePasswordVisibilityConfirm}
+              src={eyeConfirm ? eyeClose : eyeOpen}
               alt=""
             />
             <input
               className="w-full p-2 rounded-5 mb-3 text-end border focus:outline-none focus:ring-2 focus:ring-black"
-              type={passwordShown ? "text" : "password"}
+              type={passwordShownConfirm ? "text" : "password"}
               placeholder="تأكيد كلمة المرور"
               name="password_confirmation"
               value={form.password_confirmation}
@@ -323,9 +332,7 @@ function RegisterForm() {
           {errorMessages.password_confirmation && (
             <p className="text-danger">{errorMessages.password_confirmation}</p>
           )}
-        </Form.Group>
-
-      
+        </Form.Group> */}
         <Form.Check
           reverse
           label={
@@ -334,7 +341,6 @@ function RegisterForm() {
             </>
           }
         />
-
         <Button
           style={{ backgroundColor: isFormValid() ? "black" : "#BDBFC4" }}
           className="border-0 rounded-5 w-100 mt-3 p-2 fs-5"
@@ -343,12 +349,10 @@ function RegisterForm() {
         >
           إنشاء حساب
         </Button>
-
         {/* عرض رسالة الخطأ العامة إذا وُجدت */}
         {errorMessages.general && (
           <p className="text-danger mt-3">{errorMessages.general}</p>
         )}
-
         <Waitting show={showWaitting} />
         <Loadding show={showLoading} />
         {<Success show={showSuccess} />}

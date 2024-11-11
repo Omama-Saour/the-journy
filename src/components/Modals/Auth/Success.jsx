@@ -1,40 +1,35 @@
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import * as Icon from "react-bootstrap-icons";
-import {  useNavigate } from "react-router-dom";
+import React from "react";
+import check from "../../../assets/auth/Done_24.png";
+import { useNavigate } from "react-router-dom";
 
-function Success({ show }) {
-  const navigate=useNavigate()
+const Success = ({ show }) => {
+  const navigate = useNavigate();
+  const isMobile = window.innerWidth <= 768;
+  if (!show) return null;
+
   return (
-    <Modal show={show} onHide={() => {}} centered>
-             <Modal.Body
-          className="text-center bg-white rounded-4"
-          style={{
-            padding: "80px ",
-            width: "800px",
-            marginLeft: "-28%",
-            height: "450px",
-          }}
+    <>
+      <div className="fixed inset-0 bg-black opacity-50 z-40"></div>
+      <div className="fixed inset-0 flex items-center justify-center z-50 m-4">
+        <div
+          dir="rtl"
+          className="bg-white rounded-3xl shadow-lg p-20 mx-auto text-center max-md:min max-md:max-w-full"
         >
-          <Icon.CheckAll style={{ fontSize: "64px",marginLeft:'44%'}} />
-          <p
-            className=" mt-5 mb-5"
-            style={{ fontSize: "36px", fontWeight: "bold" }}
-          >
-            {" "}
+          <img loading="lazy" src={check} alt="" className="mx-auto mb-4" />
+          <h2 className={`mt-4 mb-4 ${isMobile ? '' : 'ml-40 mr-40'} text-3xl font-bold`}>
             لقد قمت بانشاء حسابك بنجاح
-          </p>
-          <p style={{ fontSize: "22px" }}>لنبدأ رحلتنا</p>
-          <Button
-            onClick={() =>navigate('/login',{replace:true}) }
-            className="border-0 rounded-5 w-50 mt-3 p-3 fs-5 bg-black"
-            // style={{ backgroundColor: "#BDBFC4" }}
+          </h2>
+          <p className="text-2xl mb-2">لنبدأ رحلتنا</p>
+          <button
+            onClick={() => navigate('/login', { replace: true })}
+            className={`border-0 rounded-5 mt-4 ${isMobile ? 'pl-5 pr-5' : 'pl-10 pr-10'} pb-3 pt-3 text-lg bg-black text-white`}
           >
             الذهاب لتسجيل الدخول
-          </Button>
-        </Modal.Body>
-    </Modal>
+          </button>
+        </div>
+      </div>
+    </>
   );
-}
+};
 
 export default Success;

@@ -8,9 +8,24 @@ import { useNavigate } from "react-router-dom";
 
 function ChangePassword() {
   const navigate = useNavigate();
+  const isMobile = window.innerWidth <= 768;
 
   return (
+    isMobile ?
     <>
+      <NavLogin />
+      <div className="p-14 mt-2"> 
+          <Col>
+            <p className="fw-bold mb-14 fs-5 text-right flex items-center justify-end">
+              <span>الرجوع</span>
+              <Icon.ArrowRight className="ms-3 mt-2 cursor-pointer" onClick={() => navigate(-1)} />
+            </p>
+            <ChangePasswordForm />
+          </Col>
+       
+      </div>
+    </> :
+      <>
       <NavLogin />
       <div className="p-2 mt-2"> 
         <Row className="w-full">
