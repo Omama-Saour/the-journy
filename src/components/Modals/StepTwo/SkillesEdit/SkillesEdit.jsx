@@ -26,8 +26,11 @@ const SkillesEdit = ({ onSave, skills }) => {
     setLoading(true); 
     try {
       const response = await Post_Skill({ "skill_name": skill }); 
-      const newSkill = { "skill_name": skill , id: response.data.id };
-      setSkillsList([...skillsList,newSkill]);
+      const newSkill = { skill_name: skill, id: response.data.id };
+
+    // Update the skillsList state to include the new skill
+    setSkillsList((prevList) => [...prevList, newSkill]);
+
       console.log(response) 
       setSkill(""); 
       setError(null); 
@@ -146,11 +149,11 @@ setSkillsListt((prevEducation) => prevEducation.filter((edu) => edu.id !== id));
               {/* Display each skill added */}
               {skillsList.map((skillItem, index) => (
                 <SkillesEditCard
-                  key={index}
-                  initialValues={{
-                    skill: skill.skill_name_ar ? skill.skill_name_ar : skill.skill_name,
-                    id: skillItem.id
-                  }}
+                key={index} 
+                initialValues={{
+                  skill: skillItem.skill_name_ar || skillItem.skill_name,
+                  id: skillItem.id,
+                }}
                   onDelete={() => handleDelete(skillItem.id)} 
                   deleteLoading={deletingId === skillItem.id} 
                 />
@@ -161,7 +164,7 @@ setSkillsListt((prevEducation) => prevEducation.filter((edu) => edu.id !== id));
                 <SkillesEditCard
                 key={index}
                 initialValues={{
-                  skill: skill.skill_name_ar ? skill.skill_name_ar : skill.skill_name,
+                  skill: skill.skill_name_ar || skill.skill_name,
                   id: skill.id
                   }}
                   onDelete={() => handleDelete(skill.id)} 

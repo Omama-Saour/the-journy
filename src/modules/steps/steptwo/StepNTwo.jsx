@@ -4,9 +4,20 @@ import MainContent from "../../../components/StepTwo/MainContent";
 import patternbackground from "../../../assets/loading/patternbackground.png";
 import arrow from "../../../assets/StepOne/arrow-left-line.png";
 import { useNavigate } from "react-router-dom";
+import TwoDone from "../../../components/Modals/StepTwo/TwoDone";
+import { useState } from "react";
 
 const StepNTwo = () => {
-  const navigate=useNavigate()
+  const [isTwoDone, setisTwoDone] = useState(false);
+
+  const handleopen = () => {
+    setisTwoDone(true);
+  };
+
+  const handleclose = () => {
+    setisTwoDone(false);
+  };
+
   return (
     <div className="flex overflow-hidden flex-col" 
     style={{
@@ -26,10 +37,12 @@ const StepNTwo = () => {
             src={arrow}
             alt=""
             className="object-contain self-stretch my-auto w-10 aspect-square"
-            onClick={()=>navigate('/StepNThree',{replace:true})}
+            onClick={handleopen}
           />
         </div>
       </div>
+
+      {isTwoDone && <TwoDone onSave={handleclose}/>}
     </div>
   );
 };

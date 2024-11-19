@@ -44,7 +44,8 @@ function LoginForm() {
 
       const errorMessage =
         err?.response?.data?.message || "حدث خطأ أثناء تسجيل الدخول";
-      setError("يوجد خطأ بادخال اسم المستخدم أو كلمة المرور");
+      setError("يوجد خطأ بادخال البريد الالكتروني أو كلمة المرور");
+      // برجاء ادخال كلمة مرور الصحيحة أو اختيار نسيان كلمة المرور
       console.log("error", errorMessage);
     } finally {
       setShowLoading(false);
@@ -93,6 +94,7 @@ function LoginForm() {
             />
           </div>
         </Form.Group>
+        {error && <p dir="rtl" className="text-danger">{error}</p>}
 
         <div className="d-flex justify-content-between mt-5">
           <span onClick={() => navigate("/change-password")}>
@@ -100,6 +102,7 @@ function LoginForm() {
           </span>
           <Form.Check reverse label="تذكرني" />
         </div>
+
         <Button
           style={{ backgroundColor: isFormValid() ? "black" : "#BDBFC4" }}
           className={`border-0 rounded-5 w-100 mt-3 p-2 fs-5 `}
@@ -112,8 +115,7 @@ function LoginForm() {
         <Loadding show={showLoading} />
       </Form>
 
-      {error && <p className="text-danger mt-3">{error}</p>}
-
+     
       {!error && showSuccess && <SuccessLogin show={showSuccess} />}
     </>
   );

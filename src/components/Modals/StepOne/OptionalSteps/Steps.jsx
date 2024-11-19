@@ -1,18 +1,16 @@
 import React, { useState } from "react";
 import closered from "../../../../assets/StepOne/closered.png";
 import upload from "../../../../assets/StepOne/file-upload.png";
-import { useNavigate } from "react-router-dom";
 import {
   OptionalLinkedInURL,
   OptionalUploadCV,
   SendExtractedCV,
 } from "../../../../modules/steps/stepone/service";
 
-const ProgressBar = () => {
-  const navigate = useNavigate();
+const ProgressBar = ({ onSave }) => {
   const steps = ["سيرتك الذاتية", "رابط لينكدان"];
   const [activeStep, setActiveStep] = useState(1);
-  const [selectedFile, setSelectedFile] = useState(null); // State for the selected file
+  const [selectedFile, setSelectedFile] = useState(null); 
   const [imageSrc, setImageSrc] = useState(upload);
   const [linkedinURL, setLinkedinURL] = useState("");
   const [loading, setLoading] = useState(false);
@@ -40,76 +38,123 @@ const ProgressBar = () => {
     setSelectedFile(null);
   };
 
-  const cleanDates = (data) => {
-    // Check if the data is an array
-    if (Array.isArray(data)) {
+//   const cleanDates = (data) => {
+//     const today = new Date();
+//     const formattedToday = today.toISOString().split('T')[0]; // Formats as 'YYYY-MM-DD'
+
+//     // Function to convert date from DD-MM-YYYY to YYYY-MM-DD
+//     const formatDate = (dateStr) => {
+//         const parts = dateStr.split('-');
+//         if (parts.length === 3) {
+//             const [day, month, year] = parts;
+//             return `${year}-${month}-${day}`; // Reformat to YYYY-MM-DD
+//         }
+//         return dateStr; // Return original if format is unexpected
+//     };
+
+//     // Check if the data is an array
+//     if (Array.isArray(data)) {
+//         return data.map(cleanDates); // Recursively clean each item in the array
+//     } else if (typeof data === "object" && data !== null) {
+//         const cleanedData = { ...data }; // Create a shallow copy of the object
+
+//         if (cleanedData.start_date === "not mentioned" || cleanedData.start_date === "Present" || cleanedData.start_date === "present") {
+//             cleanedData.start_date = formattedToday;
+//         }
+//         if (cleanedData.end_date === "not mentioned" || cleanedData.end_date === "Present" || cleanedData.end_date === "present" ) {
+//             cleanedData.end_date = formattedToday;
+//         }
+//         if (cleanedData.expiration_date === "not mentioned" || cleanedData.expiration_date === "Present" || cleanedData.expiration_date === "present") {
+//             cleanedData.expiration_date = formattedToday;
+//         }
+//         if (cleanedData.issue_date === "not mentioned" || cleanedData.issue_date === "Present" || cleanedData.issue_date === "present") {
+//             cleanedData.issue_date = formattedToday;
+//         }
+    
+//         if (cleanedData.issue_date && /^\d{2}-\d{2}-\d{4}$/.test(cleanedData.issue_date)) {
+//             cleanedData.issue_date = formatDate(cleanedData.issue_date);
+//         }
+
+//         for (const key in cleanedData) {
+//             cleanedData[key] = cleanDates(cleanedData[key]);
+//         }
+
+//         return cleanedData;
+//     }
+//     return data;
+// };
+
+const cleanDates = (data) => {
+  const today = new Date();
+  const formattedToday = today.toISOString().split('T')[0]; // Formats as 'YYYY-MM-DD'
+
+  // Function to convert date from DD-MM-YYYY to YYYY-MM-DD
+  const formatDate = (dateStr) => {
+      const parts = dateStr.split('-');
+      if (parts.length === 3) {
+          const [day, month, year] = parts;
+          return `${year}-${month}-${day}`; // Reformat to YYYY-MM-DD
+      }
+      else if (parts.length === 2) { // Check for MM-YYYY format
+        const [month, year] = parts;
+        const day = '01';
+        return `${year}-${month}-${day}`; // Set day to 01 for MM-YYYY
+    }
+      return null; // Return null for unexpected formats
+  };
+
+  // Function to check if a date is valid
+  const isValidDate = (dateStr) => {
+      const date = new Date(dateStr);
+      return !isNaN(date.getTime());
+  };
+
+  // Check if the data is an array
+  if (Array.isArray(data)) {
       return data.map(cleanDates); // Recursively clean each item in the array
-    } else if (typeof data === "object" && data !== null) {
+  } else if (typeof data === "object" && data !== null) {
       const cleanedData = { ...data }; // Create a shallow copy of the object
 
-      // Check for specific fields and clean them
-      if (cleanedData.start_date === "not mentioned") {
-        cleanedData.start_date = "2020-01-01";
-      }
-      if (cleanedData.end_date === "not mentioned") {
-        cleanedData.end_date = "2020-01-01";
-      }
-      if (cleanedData.expiration_date === "not mentioned") {
-        cleanedData.expiration_date = "2020-01-01";
-      }
-      if (cleanedData.issue_date === "not mentioned") {
-        cleanedData.issue_date = "2020-01-01";
-      }
+      // List of date fields to check
+      const dateFields = ['start_date', 'end_date', 'expiration_date', 'issue_date'];
 
-      // Recursively clean nested arrays or objects
+      dateFields.forEach((field) => {
+          const dateValue = cleanedData[field];
+
+          // Replace with today's date for specific strings
+          if (dateValue === "not mentioned" || dateValue === "Present" || dateValue === "present") {
+              cleanedData[field] = formattedToday;
+          } else if (typeof dateValue === 'string') {
+              // Check for valid formats
+              const formattedDate = formatDate(dateValue);
+              if (formattedDate && isValidDate(formattedDate)) {
+                  cleanedData[field] = formattedDate; // Update to formatted date
+              } else {
+                  cleanedData[field] = formattedToday; // Replace with today's date if invalid
+              }
+          }
+      });
+
+      // Recursively clean nested objects or arrays
       for (const key in cleanedData) {
-        cleanedData[key] = cleanDates(cleanedData[key]);
+          cleanedData[key] = cleanDates(cleanedData[key]);
       }
 
-      return cleanedData; // Return the cleaned object
-    }
-    return data; // Return the data as is if no condition matches
-  };
+      return cleanedData;
+  }
+  return data;
+};
+const onNext = () => {
+  setActiveStep(0);
+} 
 
-  const handleAddStep0 = () => {
-    setActiveStep(0);
-  };
-
-  const handleAddStep1 = async () => {
+  const handleAddStep0 = async () => {
+    
     setLoading(true);
     setErrorMessage("");
 
-    let isFileUploaded = false;
     let isLinkedInAdded = false;
-
-    if (selectedFile) {
-      console.log("Selected file:", selectedFile);
-      const formData = new FormData();
-      formData.append("file", selectedFile);
-
-      console.log("formData");
-      console.log([...formData]);
-      try {
-        const response = await OptionalUploadCV(formData);
-        console.log("File uploaded");
-        console.log(response.data);
-
-        // Replace "not mentioned" with an empty string in the response data
-        const cleanedData = cleanDates(response.data);
-
-        const sendresponse = await SendExtractedCV(cleanedData);
-        console.log("sendresponse", sendresponse);
-
-        // const sendresponse = await SendExtractedCV(response.data);
-        // console.log("sendresponse");
-        // console.log(sendresponse);
-        isFileUploaded = true; // Mark file upload as successful
-      } catch (error) {
-        console.error("Error uploading CV:", error);
-        setErrorMessage("خطأ في رفع السيرة الذاتية. حاول مرة أخرى.");
-      }
-    }
-
+    // send api of linked in here 
     if (linkedinURL) {
       const data = { linkedin_url: linkedinURL };
 
@@ -117,7 +162,7 @@ const ProgressBar = () => {
         const response = await OptionalLinkedInURL(data);
         console.log("LinkedIn added");
         console.log(response);
-        isLinkedInAdded = true; // Mark LinkedIn URL addition as successful
+        isLinkedInAdded = true; 
       } catch (error) {
         if (error.response && error.response.status === 422) {
           setErrorMessage("الرابط غير صالح، تأكد من إضافة رابط صحيح");
@@ -130,10 +175,44 @@ const ProgressBar = () => {
 
     setLoading(false);
 
-    // Navigate only if both operations were successful
-    if (isFileUploaded && isLinkedInAdded) {
-      navigate("/StepNTwo", { replace: true });
+    if (isLinkedInAdded) {
+      setActiveStep(0);
     }
+  };
+
+  const handleAddStep1 = async () => {
+    setLoading(true);
+    setErrorMessage("");
+
+    let isFileUploaded = false;
+    if (selectedFile) {
+      console.log("Selected file:", selectedFile);
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+
+      console.log("formData");
+      console.log([...formData]);
+      try {
+        const response = await OptionalUploadCV(formData);
+        console.log("File uploaded");
+        console.log(response.data);
+        const cleanedData = cleanDates(response.data);
+
+        const sendresponse = await SendExtractedCV(cleanedData);
+        console.log("sendresponse", sendresponse);
+
+        isFileUploaded = true; 
+      } catch (error) {
+        console.error("Error uploading CV:", error);
+        setErrorMessage("خطأ في رفع السيرة الذاتية. حاول مرة أخرى.");
+      }
+    }
+    setLoading(false);
+
+    if (isFileUploaded) {
+      onSave();
+    }
+   
   };
 
   return (
@@ -227,7 +306,7 @@ const ProgressBar = () => {
         ) : (
           <>
             <button
-              onClick={() => navigate("/StepNTwo", { replace: true })}
+              onClick={activeStep === 1 ? onNext : onSave}
               className="gap-1 self-stretch px-12 py-3 my-auto border-2 border-solid border-neutral-800 border-opacity-20 min-h-[30px] rounded-[32px] text-neutral-800 w-[200px] max-md:px-5"
             >
               تخطي

@@ -35,7 +35,7 @@ const ProfileCard = () => {
     setEnhancementLoading(true); // Start loading for enhancement
     setEnhancementDone(false);
     const summaryData = {
-      text: summary.summary,
+      text: safeSummary.summary ,
     };
 
     const experienceData = {
@@ -134,17 +134,32 @@ const ProfileCard = () => {
     );
   }
 
-  const {
-    personal_info,
-    // job_title,
-    summary,
-    education,
-    experiences,
-    skills,
-    languages,
-    certificates,
-    references,
-  } = profileData;
+  // const {
+  //   personal_info,
+  //   // job_title,
+  //   summary,
+  //   education,
+  //   experiences,
+  //   skills,
+  //   languages,
+  //   certificates,
+  //   references,
+  // } = profileData;
+     // Destructure with safe defaults
+     const {
+      personal_info = {},
+      summary, // No default value here, we will handle it later
+      education = [],
+      experiences = [],
+      skills = [],
+      languages = [],
+      certificates = [],
+      references = [],
+    } = profileData || {}; // Use optional chaining to avoid errors
+  
+    // Set a default value for summary
+    const safeSummary = summary ? summary : { summary: "-" }; // Fallback if summary is null
+  
 
   return (
     <>
@@ -176,10 +191,10 @@ const ProfileCard = () => {
             title="ملخص شخصي"
             editComponent={PersonalSummaryEdit}
             onRefresh={fetchProfileData}
-            summary={summary.summary  || "-"}
+            summary={safeSummary.summary  || "-"}
           >
             <div className="text-base text-neutral-800">
-              {summary.summary || "-"}
+              {safeSummary.summary || "-"}
             </div>
           </EditableSection>
           <EditableSection

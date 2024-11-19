@@ -1,14 +1,20 @@
-import React from "react";
+import React , { useState } from "react";
 import Header from "../../../components/StepOne/Header";
 import MainContent from "../../../components/StepFour/MainContent";
 import patternbackground from "../../../assets/loading/patternbackground.png";
 import arrow from "../../../assets/StepOne/arrow-left-line.png";
 // import UnsupportedBrowser from "../../../components/Modals/StepFour/UnsupportedBrowser/UnsupportedBrowser"
 // import SuccessfulInterview from "../../../components/Modals/StepFour/SuccessfulInterviewComponents/SuccessfulInterview"
-import { useNavigate } from "react-router-dom";
+import FourDone from "../../../components/Modals/StepFour/FourDone";
 
 const StepNFour = () => {
-  const navigate = useNavigate();
+  const [isFourDone, setisFourDone] = useState(false);
+  const handleopen = () => {
+    setisFourDone(true);
+  };
+  const handleclose = () => {
+    setisFourDone(false);
+  };
   return (
     <div
       className="flex overflow-hidden flex-col"
@@ -28,7 +34,7 @@ const StepNFour = () => {
             src={arrow}
             alt=""
             className="object-contain self-stretch my-auto w-10 aspect-square"
-            onClick={() => navigate("/StepNFive", { replace: true })}
+            onClick={handleopen}
           />
         </div>
       </div>
@@ -37,6 +43,8 @@ const StepNFour = () => {
     
       {/* <UnsupportedBrowser/> */}
       {/* <SuccessfulInterview/> */}
+
+      {isFourDone && <FourDone onSave={handleclose}/>}
 
     </div>
   );

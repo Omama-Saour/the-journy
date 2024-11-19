@@ -22,6 +22,7 @@ const StepNone = () => {
 
   const [isOptionalSteps, setIsOptionalSteps] = useState(false);
   const [showNoSuggested, setShowNoSuggested] = useState(false);
+  const [isOneDone, setisOneDone] = useState(false);
   const [suggested, setSuggested] = useState({
     hardSkills: [],
     softSkills: [],
@@ -36,11 +37,16 @@ const StepNone = () => {
 
   const handleEditClick = () => {
     setIsOptionalSteps(false);
+    setisOneDone(true);
   };
 
   const handleCloseNoSuggested = () => {
     setShowNoSuggested(false);
     setIsOptionalSteps(true); 
+  };
+
+  const handleclose = () => {
+    setisOneDone(false);
   };
 
   // no state
@@ -165,7 +171,7 @@ const StepNone = () => {
 
       {isOptionalSteps && <OptionalSteps onSave={handleEditClick} />}
 
-      {<OneDone/>}
+      {isOneDone && <OneDone onSave={handleclose}/>}
 
       {showNoSuggested && (
         <NoSuggested

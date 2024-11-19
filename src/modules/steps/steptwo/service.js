@@ -19,7 +19,7 @@ export const Post_Summries = (data) => {
   return api.post(ep.PostSummries, data);
 };
 export const Edit_Summries = (data) => {
-  return api.put(ep.Editummries, data);
+  return api.post(ep.Editummries, data);
 };
 
 // skill

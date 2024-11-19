@@ -9,6 +9,7 @@ import patternbackground from "../../../assets/loading/patternbackground.png";
 import arrow from "../../../assets/StepOne/arrow-left-line.png";
 import { Send_PDFfileLinkedIn, Send_Resault, Get_LinkedInAnalysis } from "./service";
 import { useNavigate } from "react-router-dom";
+import ThreeDone from "../../../components/Modals/StepThree/ThreeDone"
 
 const StepNThree = () => {
   const navigate = useNavigate();
@@ -18,6 +19,11 @@ const StepNThree = () => {
   const [error, setError] = useState("");
   const [loadingDone, setLoadingDone] = useState(false);
   const [analysisData, setAnalysisData] = useState(null);
+  const [isTreeDone, setisThreeDone] = useState(false);
+
+  const handleclose = () => {
+    setisThreeDone(false);
+  };
 
   const handleSubmit = async () => {
     if (!selectedFile) {
@@ -108,7 +114,8 @@ const StepNThree = () => {
           h-[75px] min-h-[75px] rotate-[-3.141592653589793rad] rounded-[50px] w-[75px] cursor-pointer`}
           onClick={() => {
             if (loadingDone) {
-              navigate("/StepNFour", { replace: true });
+              // navigate("/StepNFour", { replace: true });
+              setisThreeDone(true);
             } else if (!loading) {
               handleSubmit();
             }
@@ -130,6 +137,8 @@ const StepNThree = () => {
           )}
         </div>
       </div>
+
+      {isTreeDone && <ThreeDone onSave={handleclose}/>}
       <style jsx>{`
         .loader {
           border: 4px solid rgba(255, 255, 255, 0.3);

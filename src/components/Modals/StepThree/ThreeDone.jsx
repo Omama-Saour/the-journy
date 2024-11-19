@@ -1,8 +1,10 @@
 import React from "react";
 import bg from "../../../../src/assets/StepEndbackground.png";
 import icon from "../../../../src/assets/endstep.png";
+import { useNavigate } from "react-router-dom";
 
 const ThreeDone = ({ onSave }) => {
+  const navigate = useNavigate();
   return (
     <>
       <div className="fixed inset-0 bg-black opacity-50 z-40"></div>
@@ -26,7 +28,6 @@ const ThreeDone = ({ onSave }) => {
                 src={icon}
                 className="object-contain self-start my-auto w-[100px] aspect-square cursor-pointer"
                 alt="Step Icon"
-                onClick={onSave}
               />
               <h1 dir="rtl" className="mt-6 text-3xl font-bold leading-12">
                 سأحرص علي ارسال طلب صداقه لك,
@@ -39,7 +40,7 @@ const ThreeDone = ({ onSave }) => {
               </h1>
               <button
                 className="px-2 mt-10 w-full text-lg font-medium leading-none text-center text-white bg-neutral-800 min-h-[50px] max-w-[130px] rounded-[32px] max-md:px-2"
-                onClick={onSave}
+                onClick={() => navigate("/StepNFour", { replace: true })}
               >
                 التالي
               </button>

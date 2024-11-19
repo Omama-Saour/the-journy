@@ -55,8 +55,7 @@ function RegisterForm() {
       form.last_name &&
       form.email &&
       form.phone &&
-      form.password &&
-      form.password_confirmation
+      form.password 
     );
   };
 
@@ -93,8 +92,14 @@ function RegisterForm() {
         setShowWaitting(false);
         setShowLoading(true);
 
+        const formData = {
+          ...form,
+          password_confirmation: form.password, // Use the same password
+      };
+
+
         try {
-          await REGISTER(form);
+          await REGISTER(formData);
           setShowLoading(false);
           setShowSuccess(true);
         } catch (error) {
@@ -333,23 +338,26 @@ function RegisterForm() {
             <p className="text-danger">{errorMessages.password_confirmation}</p>
           )}
         </Form.Group> */}
-        <Form.Check
-          reverse
-          label={
-            <>
-              أوافق على <u>سياسة الخصوصية</u> و <u>الشروط والأحكام</u>
-            </>
-          }
-        />
+       
+
+<div dir="rtl" className="flex items-center mt-6"> 
+  <input
+    type="checkbox"
+    id="terms"
+    className="ml-2" 
+  />
+  <label htmlFor="terms" className="font-semibold">
+    أوافق على <u>سياسة الخصوصية</u> و <u>الشروط والأحكام</u>
+  </label>
+</div>
         <Button
           style={{ backgroundColor: isFormValid() ? "black" : "#BDBFC4" }}
           className="border-0 rounded-5 w-100 mt-3 p-2 fs-5"
           type="submit"
-          disabled={!isFormValid()} // الزر معطل إذا كانت الحقول غير صالحة
+          disabled={!isFormValid()} 
         >
           إنشاء حساب
         </Button>
-        {/* عرض رسالة الخطأ العامة إذا وُجدت */}
         {errorMessages.general && (
           <p className="text-danger mt-3">{errorMessages.general}</p>
         )}

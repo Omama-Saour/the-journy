@@ -16,7 +16,7 @@ const OptionalSteps = ({ onSave }) => {
               هذه الخطوات تسهل علينا بناء سيرة ذاتية دقيقة
             </p>
           </header>
-          <ProgressBar />
+          <ProgressBar onSave={onSave} />
           <div className="flex absolute top-10 right-10 z-0 items-end w-[20px]">
             <img
               loading="lazy"

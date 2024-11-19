@@ -20,7 +20,7 @@ const PersonalSummaryEdit = ({ onSave, summary }) => {
 
   // Handle form submission
   const handleSubmit = async () => {
-    const data = { summary: summaryy };
+    const data = { summary: summaryy , "_method": "PUT"};
     setLoading(true); // Set loading to true
 
     try {

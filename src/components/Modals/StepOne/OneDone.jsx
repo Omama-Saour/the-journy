@@ -1,12 +1,15 @@
 import React from "react";
 import bg from "../../../../src/assets/StepEndbackground.png";
 import icon from "../../../../src/assets/endstep.png";
+import { useNavigate } from "react-router-dom";
 
-const OneDone = ({ onSave }) => {
+const OneDone = () => {
+  const navigate = useNavigate();
   return (
     <>
       <div className="fixed inset-0 bg-black opacity-50 z-40"></div>
       <section className="fixed inset-0 flex flex-col justify-center items-center px-5 py-4 z-50">
+        {/* w-[800px] */}
         <main className="flex relative flex-col md:flex-row justify-between bg-white rounded-3xl max-w-[850px] max-h-[580px] max-md:px-5 max-md:py-24">
           <div className="hidden md:block w-1/3 h-full relative">
             <img
@@ -26,7 +29,6 @@ const OneDone = ({ onSave }) => {
                 src={icon}
                 className="object-contain self-start my-auto w-[100px] aspect-square cursor-pointer"
                 alt="Step Icon"
-                onClick={onSave}
               />
               <h1 dir="rtl" className="mt-6 text-3xl font-bold leading-12">
                 لقد اتممت الخطوة الأولي نحو النجاح!
@@ -37,7 +39,8 @@ const OneDone = ({ onSave }) => {
               </h1>
               <button
                 className="px-2 mt-10 w-full text-lg font-medium leading-none text-center text-white bg-neutral-800 min-h-[50px] max-w-[130px] rounded-[32px] max-md:px-2"
-                onClick={onSave}
+                // onClick={onSave}
+                onClick={() => navigate("/StepNTwo", { replace: true })}
               >
                 التالي
               </button>
