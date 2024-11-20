@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
-// import * as Icon from "react-bootstrap-icons";
 import Waitting from "../../../components/Modals/Auth/Waitting";
 import Loadding from "../../../components/Modals/Auth/Loadding";
 import Success from "../../../components/Modals/Auth/Success";
@@ -39,6 +38,9 @@ function RegisterForm() {
   const [hasUpperCase, setHasUpperCase] = useState(false);
   const [hasLowerCase, setHasLowerCase] = useState(false);
 
+  // Checkbox state
+  const [termsAccepted, setTermsAccepted] = useState(false);
+
   const togglePasswordVisibility = () => {
     setPasswordShown(!passwordShown);
     setEye(!eye);
@@ -49,13 +51,23 @@ function RegisterForm() {
     setEyeConfirm(!eyeConfirm);
   };
 
+  const handle_checkbox_change = () => {
+    setTermsAccepted(!termsAccepted);
+  };
+
   const isFormValid = () => {
     return (
       form.first_name &&
       form.last_name &&
       form.email &&
       form.phone &&
-      form.password 
+      form.password &&
+      hasNumber &&
+      hasMinLength &&
+      hasSpecialChar &&
+      hasUpperCase &&
+      hasLowerCase &&
+      termsAccepted
     );
   };
 
@@ -111,12 +123,10 @@ function RegisterForm() {
           if (errorResponse.phone) {
             newErrorMessages.phone = errorResponse.phone[0]; // الخطأ الخاص برقم الهاتف
           }
-          if (errorResponse.password_confirmation) {
-            newErrorMessages.password_confirmation =
-              errorResponse.password_confirmation[0]; // الخطأ الخاص بتأكيد كلمة المرور
-          }
-
-          // تعيين الرسائل العامة إذا وُجدت
+          // if (errorResponse.password_confirmation) {
+          //   newErrorMessages.password_confirmation =
+          //     errorResponse.password_confirmation[0]; // الخطأ الخاص بتأكيد كلمة المرور
+          // }
           if (Object.keys(newErrorMessages).length === 0) {
             newErrorMessages.general = "حدث خطأ أثناء إنشاء الحساب";
           }
@@ -124,10 +134,10 @@ function RegisterForm() {
           setErrorMessages(newErrorMessages); // تعيين الأخطاء في الحالة
           setShowLoading(false);
         }
-      }, 2000); // واجهة الانتظار تظهر لمدة ثانيتين
+      }, 5000);
     } catch (error) {
       setShowWaitting(false); // إيقاف واجهة الانتظار
-      setErrorMessages({ general: "حدث خطأ غير متوقع" }); // تعيين رسالة الخطأ العامة
+      setErrorMessages({ general: "حدث خطأ غير متوقع" });
     }
   };
 
@@ -175,7 +185,7 @@ function RegisterForm() {
         <Form.Group controlId="formBasicEmail">
           <Form.Label className="fw-bold">البريد الإلكتروني</Form.Label>
           <input
-            className="w-full p-2 rounded-5 mb-3 text-end border focus:outline-none focus:ring-2 focus:ring-black"
+            className="w-full p-2 rounded-5 text-end border focus:outline-none focus:ring-2 focus:ring-black"
             type="email"
             placeholder="ادخل البريد الإلكتروني"
             name="email"
@@ -189,10 +199,10 @@ function RegisterForm() {
           )}
         </Form.Group>
         <Form.Group controlId="formBasicMobile">
-          <Form.Label className="fw-bold">رقم الجوال</Form.Label>
+          <Form.Label className="fw-bold mt-3">رقم الجوال</Form.Label>
 
           <input
-            className="w-full p-2 rounded-5 mb-3 text-end border focus:outline-none focus:ring-2 focus:ring-black"
+            className="w-full p-2 rounded-5 text-end border focus:outline-none focus:ring-2 focus:ring-black"
             type="tel"
             placeholder="ادخل رقم الجوال"
             name="phone"
@@ -206,7 +216,7 @@ function RegisterForm() {
           )}
         </Form.Group>
         <Form.Group controlId="formBasicPassword">
-          <Form.Label className="fw-bold">تكوين كلمة المرور</Form.Label>
+          <Form.Label className="fw-bold mt-3">تكوين كلمة المرور</Form.Label>
           <div className="position-relative">
             <img
               className="position-absolute"
@@ -345,6 +355,8 @@ function RegisterForm() {
     type="checkbox"
     id="terms"
     className="ml-2" 
+    checked={termsAccepted}
+    onChange={handle_checkbox_change}
   />
   <label htmlFor="terms" className="font-semibold">
     أوافق على <u>سياسة الخصوصية</u> و <u>الشروط والأحكام</u>

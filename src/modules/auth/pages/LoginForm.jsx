@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import * as Icon from "react-bootstrap-icons";
 import Loadding from "../../../components/Modals/Auth/Loadding";
 import SuccessLogin from "../../../components/Modals/Auth/SuccessLogin";
 import { LOGIN } from "../service";
+import eyeOpen from "../../../assets/auth/eye-open.png";
+import eyeClose from "../../../assets/auth/eye-close.png";
 
 function LoginForm() {
   const [passwordShown, setPasswordShown] = useState(false);
+  const [eye, setEye] = useState(true);
+
   const [form, setForm] = useState({
     identifier: "",
     password: "",
@@ -15,6 +18,7 @@ function LoginForm() {
   const navigate = useNavigate();
   const togglePasswordVisibility = () => {
     setPasswordShown(!passwordShown);
+    setEye(!eye);
   };
 
   const [error, setError] = useState("");
@@ -74,7 +78,7 @@ function LoginForm() {
         <Form.Group controlId="formBasicPassword">
           <Form.Label className="fw-bold">كلمة المرور</Form.Label>
           <div className="position-relative">
-            <Icon.Eye
+            {/* <Icon.Eye
               className="position-absolute"
               onClick={togglePasswordVisibility}
               style={{
@@ -83,6 +87,18 @@ function LoginForm() {
                 top: "35%",
                 transform: "translateY(-50%)",
               }}
+            /> */}
+            <img
+              className="position-absolute"
+              style={{
+                cursor: "pointer",
+                left: "10px",
+                top: "35%",
+                transform: "translateY(-50%)",
+              }}
+              onClick={togglePasswordVisibility}
+              src={eye ? eyeClose : eyeOpen}
+              alt=""
             />
             <input
               className="w-full p-2 rounded-5 mb-3 text-end border focus:outline-none focus:ring-2 focus:ring-black"

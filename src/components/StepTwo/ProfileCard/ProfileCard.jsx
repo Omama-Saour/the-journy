@@ -44,7 +44,7 @@ const ProfileCard = () => {
         company: exp.company_name,
         start_date: exp.start_date,
         end_date: exp.end_date || "",
-        description: exp.company_location,
+        description: exp.description,
       })),
     };
 
@@ -148,14 +148,14 @@ const ProfileCard = () => {
      // Destructure with safe defaults
      const {
       personal_info = {},
-      summary, // No default value here, we will handle it later
+      summary, 
       education = [],
       experiences = [],
       skills = [],
       languages = [],
       certificates = [],
       references = [],
-    } = profileData || {}; // Use optional chaining to avoid errors
+    } = profileData || {}; 
   
     // Set a default value for summary
     const safeSummary = summary ? summary : { summary: "-" }; // Fallback if summary is null
@@ -178,10 +178,10 @@ const ProfileCard = () => {
           <PersonalInfo
             firstname={personal_info.first_name  || "-"}
             lastname={personal_info.last_name  || "-"}
-            cityy={personal_info.city || "city"}
-            country={personal_info.country || "country"}
-            phone={personal_info.phone  || "phone"}
-            email={personal_info.email  || "email"}
+            cityy={personal_info.city || "-"}
+            country={personal_info.country || "-"}
+            phone={personal_info.phone  || "-"}
+            email={personal_info.email  || "-"}
             initials={`${personal_info.first_name[0]  || "-"}${personal_info.last_name[0]  || "-"}`}
             websiteurl={personal_info.website_url  || "-"}
             linkedinurl={personal_info.linkedin_url  || "-"}
@@ -243,7 +243,7 @@ const ProfileCard = () => {
                 title={exp.experience_name  || "-"}
                 company={exp.company_name  || "-"}
                 period={`${exp.start_date  || "-"} - ${exp.end_date || "لا يزال يعمل"}`}
-                responsibilities={exp.company_location || "-"}
+                responsibilities={exp.description || "-"}
               />
             ))}
           </EditableSection>

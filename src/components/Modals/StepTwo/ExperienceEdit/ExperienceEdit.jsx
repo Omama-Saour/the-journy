@@ -31,7 +31,7 @@ const ExperienceEdit = ({ onSave, experiences }) => {
       exper_start_date: startDate,
       exper_end_date: isCurrentlyWorking ? "" : endDate,
       company_name: companyName,
-      company_location: "",
+      company_location: responsibilities,
       responsibilities: [
         {
           responsability_name: responsibilities,

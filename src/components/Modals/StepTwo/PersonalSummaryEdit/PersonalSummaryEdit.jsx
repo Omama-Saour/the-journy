@@ -3,7 +3,7 @@ import Button from "../EducationForm/Button";
 import icon from "../../../../../src/assets/personltyTest/Vector.png";
 import { Edit_Summries } from "../../../../modules/steps/steptwo/service";
 
-const PersonalSummaryEdit = ({ onSave, summary }) => {
+const PersonalSummaryEdit = ({ onSave, summary, }) => {
   const [summaryy, setSummary] = useState(summary || ""); // Initialize with summary prop
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,6 +25,7 @@ const PersonalSummaryEdit = ({ onSave, summary }) => {
 
     try {
       console.log(data);
+      // Post_Summries
       await Edit_Summries(data);
       onSave();
     } catch (error) {
