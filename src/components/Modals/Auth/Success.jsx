@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import check from "../../../assets/auth/Done_24.png";
 import { useNavigate } from "react-router-dom";
 
 const Success = ({ show }) => {
   const navigate = useNavigate();
-  const isMobile = window.innerWidth <= 768;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize',   
+ handleResize);
+  }, []);
   if (!show) return null;
 
   return (

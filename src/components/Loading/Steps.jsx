@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import vector6 from "../../assets/loading/Vector6.png";
 import vector7 from "../../assets/loading/Vector7.png";
 import vecrr from "../../assets/loading/Vectorr.png";
 
 const Steps = () => {
-  const isMobile = window.innerWidth <= 768;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize',   
+ handleResize);
+  }, []);
   return (
     isMobile ?  <section className="flex relative flex-col justify-center pt-14 pr-14 pl-14 w-full max-md:px-5 max-md:max-w-full">
     <div className="flex z-0 flex-col items-center w-full text-center uppercase max-md:max-w-full">
@@ -94,7 +104,7 @@ const Steps = () => {
       loading="lazy"
       src={vector6}
       alt=""
-      className="object-contain absolute z-0 aspect-square h-[90px] left-[320px] top-[110px] w-[90px]"
+      className="object-contain absolute z-0 aspect-square h-[90px] left-[260px] top-[110px] w-[90px]"
     />
 
     <img

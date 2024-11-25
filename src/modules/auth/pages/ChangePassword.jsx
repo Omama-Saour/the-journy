@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import { Col, Row } from "react-bootstrap";
 import Colimage from "../../../components/auth/Col_image";
 import ChangePasswordForm from "./ChangePasswordForm";
@@ -8,7 +8,17 @@ import { useNavigate } from "react-router-dom";
 
 function ChangePassword() {
   const navigate = useNavigate();
-  const isMobile = window.innerWidth <= 768;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize',   
+ handleResize);
+  }, []);
 
   return (
     isMobile ?

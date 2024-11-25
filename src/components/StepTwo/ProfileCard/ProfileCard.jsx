@@ -134,20 +134,9 @@ const ProfileCard = () => {
     );
   }
 
-  // const {
-  //   personal_info,
-  //   // job_title,
-  //   summary,
-  //   education,
-  //   experiences,
-  //   skills,
-  //   languages,
-  //   certificates,
-  //   references,
-  // } = profileData;
-     // Destructure with safe defaults
      const {
       personal_info = {},
+      // job_title,
       summary, 
       education = [],
       experiences = [],
@@ -160,7 +149,6 @@ const ProfileCard = () => {
     // Set a default value for summary
     const safeSummary = summary ? summary : { summary: "-" }; // Fallback if summary is null
   
-
   return (
     <>
       <section className="flex overflow-hidden flex-col justify-start p-8 bg-white min-w-[240px] rounded-[31px] shadow-[8px_8px_24px_rgba(32,32,32,0.1)] w-[796px] max-md:px-5 max-md:max-w-full">
@@ -253,13 +241,21 @@ const ProfileCard = () => {
             onRefresh={fetchProfileData}
             skills={skills}
           >
-            <div className="text-base text-neutral-800">
+            {/* <div className="text-base text-neutral-800">
               {skills.map((skill, index) => (
                 <div key={index} className="text-base text-neutral-800">
                   {skill.skill_name_ar ? skill.skill_name_ar : skill.skill_name  || "-"}
                 </div>
               ))}
-            </div>
+            </div> */}
+
+<div dir="rtl" className="flex flex-wrap gap-2 text-base text-neutral-800">
+  {skills.map((skill, index) => (
+    <div key={index} className="border border-gray-300 rounded-[31px] p-2">
+      {skill.skill_name_ar ? skill.skill_name_ar : skill.skill_name || "-"}
+    </div>
+  ))}
+</div>
           </EditableSection>
           <EditableSection
             title="اللغات"

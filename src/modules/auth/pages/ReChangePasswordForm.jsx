@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 import { Button, Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import SuccessPassword from "../../../components/Modals/Auth/SuccessPassword";
@@ -9,7 +9,17 @@ import checktrue from "../../../assets/auth/checktrue.png";
 import checkfalse from "../../../assets/auth/checkfalse.png";
 
 function ReChangePasswordForm() {
-  const isMobile = window.innerWidth <= 768;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize',   
+ handleResize);
+  }, []);
 
   const [showSuccess, setShowSuccess] = useState(false);
   const [errorMessages, setErrorMessages] = useState({});

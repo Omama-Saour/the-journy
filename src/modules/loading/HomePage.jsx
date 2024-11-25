@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import Layout from "../../components/Loading/Layout";
 import Hero from "../../components/Loading/Hero";
 import Features from "../../components/Loading/Features";
@@ -12,7 +12,17 @@ import CookieConsent from "../../components/Modals/LandingFirst/CookieConsent/Co
 import Founder from "../../components/Loading/Founder";
 
 const HomePage = () => {
-  const isMobile = window.innerWidth <= 768;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize',   
+ handleResize);
+  }, []);
   return (
     <Layout>
       <CookieConsent/>

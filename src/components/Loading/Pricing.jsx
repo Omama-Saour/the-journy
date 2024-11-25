@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import frame from "../../assets/loading/Frame.png";
 import rec from "../../assets/loading/rec.svg";
 
 const Pricing = () => {
-  const isMobile = window.innerWidth <= 768;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize',   
+ handleResize);
+  }, []);
   return (
    isMobile ? 
    <section className="flex flex-col px-24 py-1 w-full max-md:px-5 max-md:max-w-full">

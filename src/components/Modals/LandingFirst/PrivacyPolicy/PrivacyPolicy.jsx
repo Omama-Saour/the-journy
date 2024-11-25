@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import icon from "../../../../../src/assets/personltyTest/Vector.png";
 import "./scrollbar.css";
 
 const PrivacyPolicy = ({ onSave }) => {
   
-  const isMobile = window.innerWidth <= 768;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize',   
+ handleResize);
+  }, []);
   return (
     <>
       <div className="fixed inset-0 bg-black opacity-50 z-40"></div>

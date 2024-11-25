@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import journyImage from '../../assets/loading/logowhite.png';
 import youtube from '../../assets/loading/youtube.png';
 import facebook from '../../assets/loading/facebook.png';
@@ -10,7 +10,17 @@ import TermsConditions from '../Modals/LandingFirst/TermsConditions/TermsConditi
 import { useNavigate } from 'react-router-dom';
 
 const Footer = () => {
-  const isMobile = window.innerWidth <= 768;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize',   
+ handleResize);
+  }, []);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenConditions, setIsOpenConditions] = useState(false);
   const navigate = useNavigate();

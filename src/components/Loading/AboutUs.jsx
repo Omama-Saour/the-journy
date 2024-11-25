@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import AaboutUs from "../../assets/loading/aboutus.png";
 import vec from "../../assets/loading/Vector4.png";
 
 const AboutUs = () => {
-  const isMobile = window.innerWidth <= 768;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize',   
+ handleResize);
+  }, []);
   return isMobile ? (
     <section className="flex-col gap-10 items-center pr-14 pl-14 w-full max-md:px-5 max-md:max-w-full">
     <div className="flex z-0 flex-col self-stretch my-auto rounded-2xl min-w-[240px] w-[625px] max-md:max-w-full">

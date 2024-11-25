@@ -81,7 +81,7 @@ const FAQ = () => {
               loading="lazy"
               src={rec}
               alt=""
-              className="object-contain w-6 aspect-square"
+              className="object-contain w-6 aspect-square self-start"
             />
             <p dir="rtl" className="mt-8 max-md:max-w-full">
               {openIndex !== null ? faqItems[openIndex].answer : ''}

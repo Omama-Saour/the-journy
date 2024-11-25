@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import S1 from "../../../src/assets/loading/S1.png";
 import S2 from "../../../src/assets/loading/S2.png";
 import S3 from "../../../src/assets/loading/S3.png";
@@ -19,7 +19,17 @@ const Feature = ({ icon, description }) => (
 );
 
 const Features = () => {
-  const isMobile = window.innerWidth <= 768;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize',   
+ handleResize);
+  }, []);
   const features = [
     {
       icon: S1,
@@ -63,12 +73,7 @@ const Features = () => {
       {
         isMobile ? (
           <>
-           <div className="flex absolute inset-x-0 z-0 shrink-0 h-px bg-indigo-300 bottom-[195px] min-w-[240px] top-[160px] w-[1240px] max-md:max-w-full" />
-           <div className="flex absolute inset-x-0 z-0 shrink-0 h-px bg-indigo-300 bottom-[195px] min-w-[240px] top-[320px] w-[1240px] max-md:max-w-full" />
-           <div className="flex absolute inset-x-0 z-0 shrink-0 h-px bg-indigo-300 bottom-[195px] min-w-[240px] top-[480px] w-[1240px] max-md:max-w-full" />
-           <div className="flex absolute inset-x-0 z-0 shrink-0 h-px bg-indigo-300 bottom-[195px] min-w-[240px] top-[640px] w-[1240px] max-md:max-w-full" />
-           <div className="flex absolute inset-x-0 z-0 shrink-0 h-px bg-indigo-300 bottom-[195px] min-w-[240px] top-[800px] w-[1240px] max-md:max-w-full" />
-  </>
+          </>
         ) :
         (
           <div className="flex absolute inset-x-0 top-2/4 z-0 justify-between items-start -translate-y-2/4 min-w-[240px] translate-x-[0%] w-[1240px] max-md:max-w-full">
@@ -85,11 +90,17 @@ const Features = () => {
       }
         <div className="flex overflow-hidden z-0 flex-wrap flex-1 shrink gap-0.5 items-start text-lg font-bold text-right basis-0 min-w-[240px] text-neutral-800 max-md:max-w-full">
           {features.map((feature, index) => (
-            <Feature
+           <>
+           <Feature
               key={index}
               icon={feature.icon}
               description={feature.description}
             />
+           
+           {
+            isMobile &&  <div className='flex z-0 h-px bg-indigo-300 w-full mt-4 max-w-[1240px]' />
+           }
+           </>
           ))}
         </div>
       </div>

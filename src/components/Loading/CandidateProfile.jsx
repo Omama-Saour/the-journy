@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import profile from "../../assets/loading/profile.png";
 import Vector33 from "../../assets/loading/Vector33.png";
 
 const CandidateProfile = () =>  {
-  const isMobile = window.innerWidth <= 768;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize',   
+ handleResize);
+  }, []);
   return (
    isMobile ?  <section className="flex-col relative gap-10 items-center p-14 w-full max-md:px-5 max-md:max-w-full">
   

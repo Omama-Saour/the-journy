@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import journyImage from "../../assets/journy.png";
 
 const Header = ({ onOldUserClick, onNewUserClick }) => {
-  const isMobile = window.innerWidth <= 768;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize',   
+ handleResize);
+  }, []);
   return (
     <header className={`flex flex-wrap gap-6 justify-between ${isMobile ? 'px-4' : 'px-24'} py-6 w-full text-lg font-medium leading-none text-right max-md:max-w-full min-md:max-w-full`}>
       <div className="flex gap-6 items-center self-stretch my-auto max-md:max-w-full">

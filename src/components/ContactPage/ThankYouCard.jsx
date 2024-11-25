@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import Line from "../../../src/assets/loading/Line 6.png"
 
 const ThankYouCard = () => {
   
-  const isMobile = window.innerWidth <= 768;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize',   
+ handleResize);
+  }, []);
   return (
     isMobile ? 
     <div className="flex flex-col justify-center self-stretch my-auto text-right text-white min-w-[240px] w-[400px]">

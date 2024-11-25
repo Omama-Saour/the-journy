@@ -1,33 +1,42 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import founder from "../../assets/loading/founder.png";
 import vec2 from "../../assets/loading/Vectorf.png";
 import vec3 from "../../assets/loading/Vectorff.png";
 
 const Founder = () => {
-  const isMobile = window.innerWidth <= 768;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize',   
+ handleResize);
+  }, []);
   return isMobile ? (
-    //    <section className="flex flex-wrap gap-10 items-center p-14 w-full max-md:px-5 max-md:max-w-full">
-    <section className="flex-col relative gap-10 items-center p-14 w-full max-md:px-5 max-md:max-w-full">
-      <div className="flex shrink self-stretch my-auto rounded-2xl min-w-[240px] w-[505px] max-md:max-w-full">
+  <section className="flex-col relative gap-10 items-center p-14 w-full max-md:px-5 max-md:max-w-full">
+      <div className="relative inline-block flex shrink self-stretch my-auto rounded-2xl min-w-[240px] w-[505px] max-md:max-w-full">
         <img
           loading="lazy"
           src={vec3}
           alt=""
-          className="object-contain absolute z-20 shrink-0 left-0 top-[26px]"
+          className="absolute z-20 shrink-0 left-[-8px] top-[-20px]"
         />
 
         <img
           loading="lazy"
           src={founder}
           alt="Expert advice illustration"
-          className="object-contain z-10 p-2 w-full rounded-2xl max-md:max-w-full"
+          className="z-10 p-2 w-full rounded-2xl max-md:max-w-full"
         />
 
 <img
           loading="lazy"
           src={vec2}
           alt=""
-          className="object-contain absolute z-20 shrink-0 right-2 top-[450px]"
+          className="absolute z-20 shrink-0 right-[-8px] bottom-[-10px]"
         />
       </div>
 

@@ -1,11 +1,23 @@
 import journyImage from "../../assets/journy.png";
 import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+
 function NavLogin() {
   const navigate=useNavigate();
-  const isMobile = window.innerWidth <= 768;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize',   
+ handleResize);
+  }, []);
   return (
     <header className="flex flex-wrap gap-10 justify-between items-center px-20 w-full text-lg font-medium leading-none text-right text-white min-h-[108px] max-md:px-5 max-md:max-w-full">
-      <div className="flex items-center self-stretch my-auto min-w-[200px]">
+      <div className="flex items-center">
         <button
           onClick={()=> navigate('/register',{replace:true})}
          className="bg-black text-white"

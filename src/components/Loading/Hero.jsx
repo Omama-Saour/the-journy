@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import vector2 from "../../assets/loading/Vector2.png";
 import vector5 from "../../assets/loading/Vector5.png";
 import vector4 from "../../assets/loading/Vector4.png";
@@ -11,7 +11,17 @@ import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
   const navigate=useNavigate();
-  const isMobile = window.innerWidth <= 768;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize',   
+ handleResize);
+  }, []);
   return (
    
     isMobile ?  (<section className="flex relative flex-col px-24 pt-8 w-full max-md:px-5 max-md:max-w-full">
@@ -20,15 +30,17 @@ const Hero = () => {
         هل أنت مستعد لتحقيق حلمك ؟
       </h2>
       <h1 className="mt-4 text-[3rem] font-extrabold leading-[80px]">
-        خطوات
-        <span className="inline-block ml-5 mr-5">
+       خطوات
+       {" "}
+        <span className="relative inline-block">
           <img
             src={vector2}
             alt=""
-            className="absolute left-[30px] w-[200px] h-auto" // Try a larger size
+            className="absolute right-[-6px] w-[115%] max-w-[400px] h-auto" 
           />
           بسيطة
         </span>
+        {" "}
         ستغير طريقة  <br /> ... بحثك عن عمل
       </h1>
 
@@ -53,7 +65,7 @@ const Hero = () => {
           loading="lazy"
           src={g1}
           alt="Decorative 1"
-          className="object-contain shrink-0 rounded-none aspect-[0.74] min-w-[80px] w-[100px]"
+          className="object-contain shrink-0 rounded-none aspect-[0.74] max-w-[80px]"
         />
       </span>
 
@@ -61,7 +73,7 @@ const Hero = () => {
         loading="lazy"
         src={g2}
         alt="Decorative 2"
-        className="object-contain rounded-none aspect-[1.72] min-w-[80px] w-[180px] max-md:max-w-full"
+        className="object-contain rounded-none aspect-[1.72] w-[140px] max-md:max-w-full"
       />
 
       {/* 
@@ -77,7 +89,7 @@ const Hero = () => {
           loading="lazy"
           src={g3}
           alt="Decorative 3"
-          className="object-contain shrink-0 rounded-none aspect-[0.74] min-w-[80px] w-[100px]"
+          className="object-contain shrink-0 rounded-none aspect-[0.74] max-w-[80px]"
         />
       </span>
     </div>

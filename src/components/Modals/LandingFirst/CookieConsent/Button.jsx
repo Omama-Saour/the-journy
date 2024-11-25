@@ -1,8 +1,7 @@
 import React from "react";
 
 const Button = ({ children, onClick, variant }) => {
-  
-  const isMobile = window.innerWidth <= 768;
+ 
   const baseClasses =
     "gap-1 self-stretch py-6 px-12 my-auto whitespace-nowrap min-h-[56px] rounded-[32px] w-[200px] max-md:px-5";
   const variantClasses =
