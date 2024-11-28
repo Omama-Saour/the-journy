@@ -1,29 +1,29 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import {useCalendlyEventListener, InlineWidget } from 'react-calendly';
 
-const Calendly = () => {
-  useEffect(() => {
-    // Create a script element
-    const script = document.createElement('script');
-    script.src = "https://assets.calendly.com/asset/production/widget.js";
-    script.async = true;
-    document.body.appendChild(script);
+const MyCalendlyComponent = () => {
 
-    // Cleanup the script when the component unmounts
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
+  useCalendlyEventListener({
+    onProfilePageViewed: () => console.log("onProfilePageViewed"),
+    onDateAndTimeSelected: () => console.log("onDateAndTimeSelected"),
+    onEventTypeViewed: () => console.log("onEventTypeViewed"),
+    onEventScheduled: (e) => console.log(e.data.payload), // onEventScheduled: is done succeffully 
+    onPageHeightResize: (e) => console.log(e.data.payload.height),
+  });
 
-  return (
-    <div>
-      <h2>Schedule a Meeting</h2>
-      <div
-        className="calendly-inline-widget"
-        data-url="https://calendly.com/omam907omam" // Replace with your actual URL
-        style={{ minWidth: '320px', height: '630px' }}
-      />
-    </div>
-  );
+    return (
+            <InlineWidget url="https://calendly.com/omam907omam/30min" styles={{
+              height: '1000px',
+            }}
+            // pageSettings={{
+            //   backgroundColor: 'ffffff',
+            //   hideEventTypeDetails: false,
+            //   hideLandingPageDetails: false,
+            //   primaryColor: '00a2ff',
+            //   textColor: '4d5055'
+            // }}
+            />
+    );
 };
 
-export default Calendly;
+export default MyCalendlyComponent;

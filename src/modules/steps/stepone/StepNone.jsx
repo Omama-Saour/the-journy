@@ -29,6 +29,7 @@ const StepNone = () => {
     hardSkillsAR: [],
     softSkillsAR: [],
     jobTitles: [],
+    carrer: "",
   });
 
   // Loading and Error state
@@ -84,8 +85,9 @@ const StepNone = () => {
         const hardSkillsAR = response.data.suggested_hard_skills_ar || [];
         const softSkillsAR = response.data.suggested_soft_skills_ar || [];
         const jobTitles = response.data.top_relevant_job_titles || [];
+        const carrer = response.data.career_personality_description || "";
         
-        setSuggested({ hardSkills, softSkills, hardSkillsAR,softSkillsAR, jobTitles });
+        setSuggested({ hardSkills, softSkills, hardSkillsAR,softSkillsAR, jobTitles, carrer });
 
         if (
           hardSkills.length > 0 ||
@@ -179,6 +181,7 @@ const StepNone = () => {
           suggestedSkills={[...suggested.hardSkills, ...suggested.softSkills]} 
           suggestedSkillsAR = {[...suggested.hardSkillsAR, ...suggested.softSkillsAR]}
           jobTitles={suggested.jobTitles} 
+          carrer={suggested.carrer}
         />
       )}
 

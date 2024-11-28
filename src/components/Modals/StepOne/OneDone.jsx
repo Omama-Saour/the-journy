@@ -13,7 +13,7 @@ const OneDone = () => {
         <main className="flex relative flex-col md:flex-row justify-between bg-white rounded-3xl max-w-[850px] max-h-[580px] max-md:px-5 max-md:py-24">
           <div className="hidden md:block w-1/3 h-full relative">
             <img
-              loading="lazy"
+              loading=""
               src={bg}
               className="object-cover w-full h-full rounded-l-3xl"
               alt="Background"

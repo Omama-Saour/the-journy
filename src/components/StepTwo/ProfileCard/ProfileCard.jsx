@@ -68,7 +68,7 @@ const ProfileCard = () => {
       );
       console.error("Error during API calls:", error);
     } finally {
-      setEnhancementLoading(false); // Stop loading
+      setEnhancementLoading(false); 
     }
   };
 
